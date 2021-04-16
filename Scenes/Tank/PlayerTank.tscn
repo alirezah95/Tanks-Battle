@@ -23,3 +23,6 @@ flip_v = true
 [node name="TankCollision" parent="." index="2"]
 visible = false
 shape = SubResource( 1 )
+
+[node name="PlayerCamera" type="Camera2D" parent="." index="6"]
+current = true

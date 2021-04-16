@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/Shot/Shot.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Gfx/shotThin.png" type="Texture" id=2]
+
+[node name="Shot" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="ShotSprite" type="Sprite" parent="."]
+scale = Vector2( 0.6, 0.6 )
+texture = ExtResource( 2 )
+flip_v = true
+
+[node name="ShotRay" type="RayCast2D" parent="."]
+position = Vector2( 0, 14.3858 )
+enabled = true
+cast_to = Vector2( 0, -20 )
+
+[node name="Visibility" type="VisibilityNotifier2D" parent="."]
+visible = false
+position = Vector2( -0.248033, 1.16229e-06 )
+scale = Vector2( 0.68748, 1.80362 )

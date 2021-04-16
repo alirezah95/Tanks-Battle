@@ -1,6 +1,5 @@
 extends "res://Scripts/Tank/Tank.gd"
 
-const PI_2: float = PI / 2
 # Max speed value, tank speed cant go higher than this value
 const MAX_SPEED: float = 200.0
 # Player tank move current speed
@@ -36,10 +35,30 @@ func _physics_process(delta: float) -> void:
 	
 	direction = Vector2(-sin(tank.rotation), cos(tank.rotation))
 	
+	# Using mouse cursor position the tank barrel direction is set.
+	barrelDirection = Vector2.ZERO.direction_to(get_local_mouse_position())
+	barrel.rotation = barrelDirection.angle() + Global.PI_2
+	
+	if not isShotLocked:
+		if Input.is_action_pressed("shot"):
+			_shot()
+	
 	move_and_slide(direction * speed)
 	
-	# Using mouse cursor position the tank barrel direction is set.
-	barrel.rotation = get_local_mouse_position().angle() + PI_2
+	return
+	
+
+
+func _shot() -> void:
+	isShotLocked = true
+	shotLockTmr.start()
+	
+	# Instancing a shot object
+	var newShot: Shot = Global.playerShotScn.instance()
+	newShot.setDirection(barrelDirection)
+	newShot.position = position
+	newShot.z_index = z_index - 1
+	get_tree().current_scene.call_deferred("add_child", newShot)
 	
 	return
 	
@@ -55,3 +74,5 @@ func _applyFriction() -> void:
 		
 	return
 	
+
+
