@@ -135,3 +135,4 @@ position = Vector2( 766.032, 466.171 )
 [node name="NPCs" type="Node2D" parent="."]
 
 [node name="NPCTank" parent="NPCs" instance=ExtResource( 3 )]
+position = Vector2( -392.48, -310.791 )

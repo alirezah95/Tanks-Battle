@@ -12,11 +12,8 @@ texture = ExtResource( 2 )
 flip_v = true
 
 [node name="ShotRay" type="RayCast2D" parent="."]
-position = Vector2( 0, 14.3858 )
 enabled = true
-cast_to = Vector2( 0, -20 )
+cast_to = Vector2( 15, 0 )
 
 [node name="Visibility" type="VisibilityNotifier2D" parent="."]
-visible = false
-position = Vector2( -0.248033, 1.16229e-06 )
-scale = Vector2( 0.68748, 1.80362 )
+rect = Rect2( -20, -10, 40, 20 )

@@ -6,22 +6,20 @@
 [ext_resource path="res://Assets/Gfx/tankBlue_barrel2_outline.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 40.125, 40.375 )
+extents = Vector2( 27.1206, 30.9572 )
 
 [node name="PlayerTank" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
 [node name="TankSprite" parent="." index="0"]
 texture = ExtResource( 3 )
-flip_v = true
 
 [node name="BarrelSprite" parent="." index="1"]
 texture = ExtResource( 4 )
-offset = Vector2( 0, -30 )
-flip_v = true
+offset = Vector2( 30, 0 )
 
 [node name="TankCollision" parent="." index="2"]
-visible = false
+position = Vector2( -3, 0 )
 shape = SubResource( 1 )
 
 [node name="PlayerCamera" type="Camera2D" parent="." index="6"]

@@ -9,12 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "PlayerTank",
+"language": "GDScript",
+"path": "res://Scripts/Tank/PlayerTank.gd"
+}, {
 "base": "Node2D",
 "class": "Shot",
 "language": "GDScript",
 "path": "res://Scripts/Shot/Shot.gd"
 } ]
 _global_script_class_icons={
+"PlayerTank": "",
 "Shot": ""
 }
 
@@ -87,5 +93,6 @@ break={
 
 [rendering]
 
-quality/2d/use_pixel_snap=true
+2d/snapping/use_gpu_pixel_snap=true
 environment/default_environment="res://default_env.tres"
+quality/2d/use_pixel_snap=true

@@ -1,5 +1,7 @@
 extends "res://Scripts/Tank/Tank.gd"
 
+class_name PlayerTank
+
 # Max speed value, tank speed cant go higher than this value
 const MAX_SPEED: float = 200.0
 # Player tank move current speed
@@ -14,7 +16,10 @@ var direction: Vector2
 
 
 func _ready() -> void:
-	pass
+	Global.player = self
+	
+	return
+	
 
 
 func _physics_process(delta: float) -> void:
@@ -33,11 +38,11 @@ func _physics_process(delta: float) -> void:
 	_applyFriction()
 	speed = clamp(speed, -MAX_SPEED, MAX_SPEED)
 	
-	direction = Vector2(-sin(tank.rotation), cos(tank.rotation))
+	direction = Vector2(-cos(tank.rotation), -sin(tank.rotation))
 	
 	# Using mouse cursor position the tank barrel direction is set.
 	barrelDirection = Vector2.ZERO.direction_to(get_local_mouse_position())
-	barrel.rotation = barrelDirection.angle() + Global.PI_2
+	barrel.rotation = barrelDirection.angle()
 	
 	if not isShotLocked:
 		if Input.is_action_pressed("shot"):

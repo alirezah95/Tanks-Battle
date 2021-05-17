@@ -6,4 +6,6 @@ onready var playerShotScn: PackedScene = (
 	preload("res://Scenes/Shot/PlayerShot.tscn"))
 
 
-const PI_2: float = PI / 2
+const PI_2: float = PI * 2
+
+var player: PlayerTank = null
