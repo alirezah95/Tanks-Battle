@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node2D",
+"class": "Level",
+"language": "GDScript",
+"path": "res://Scripts/Level.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "PlayerTank",
 "language": "GDScript",
@@ -20,6 +25,7 @@ _global_script_classes=[ {
 "path": "res://Scripts/Shot/Shot.gd"
 } ]
 _global_script_class_icons={
+"Level": "",
 "PlayerTank": "",
 "Shot": ""
 }

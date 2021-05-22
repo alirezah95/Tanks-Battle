@@ -3,11 +3,16 @@ extends "res://Scripts/Tank/Tank.gd"
 class_name PlayerTank
 
 # Max speed value, tank speed cant go higher than this value
-const MAX_SPEED: float = 200.0
+const MAX_SPEED: float = 300.0
+# Maximum and Minimum acceleration
+const MAX_ACCEL: float = 5.0
+const MIN_ACCEL: float = -MAX_ACCEL
+# Breaks force
+const BREAKS_FORCE: float = 7.0
 # Player tank move current speed
 var speed: float = 0
 # Tank friction value
-var friction: float = 0.7
+var friction: float = 0.6
 # Forward acceleration value
 var acceleration: float
 # Player tank move direction
@@ -24,18 +29,34 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	# Using up, down keys to move the tank
-	acceleration = (Input.get_action_strength("ui_down") - 
-			Input.get_action_strength("ui_up")) * 2.5
+	var input_accel: float = (Input.get_action_strength("ui_down") - 
+			Input.get_action_strength("ui_up"))
 	var turnStr: float = (Input.get_action_strength("ui_right") -
 			Input.get_action_strength("ui_left"))
 	
-	if acceleration == 0:
+	var breaks_pressed: bool = Input.is_action_pressed("break")
+	
+	if input_accel == 0.0:
+		acceleration = 0
+	else:
+		acceleration += input_accel
+		if acceleration > MAX_ACCEL:
+			acceleration = MAX_ACCEL
+		elif acceleration < MIN_ACCEL:
+			acceleration = MIN_ACCEL
+	
+	# Applying forward acceleration to speed
+	speed += acceleration
+	_apply_friction()
+	if breaks_pressed:
+		_apply_breaks()
+	
+	# Apply turn
+	if speed < 5.0 && speed > -5.0:
 		tank.rotation += turnStr * delta * 0.4
 	else:
 		tank.rotation += turnStr * delta
-	# Applying forward acceleration to speed
-	speed += acceleration
-	_applyFriction()
+	
 	speed = clamp(speed, -MAX_SPEED, MAX_SPEED)
 	
 	direction = Vector2(-cos(tank.rotation), -sin(tank.rotation))
@@ -69,7 +90,7 @@ func _shot() -> void:
 	
 
 
-func _applyFriction() -> void:
+func _apply_friction() -> void:
 	if speed < -5:
 		speed += friction
 	elif speed > 5:
@@ -81,3 +102,14 @@ func _applyFriction() -> void:
 	
 
 
+func _apply_breaks() -> void:
+	# Apply breaks
+	if speed < -5:
+		speed += BREAKS_FORCE
+	elif speed > 5:
+		speed -= BREAKS_FORCE
+	else:
+		speed = 0.0
+	
+	return
+	

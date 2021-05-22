@@ -44,13 +44,16 @@ func die() -> void:
 
 
 func _shot() -> void:
+	if isShotLocked:
+		return
+	
 	isShotLocked = true
 	shotLockTmr.start()
 	
 	# Instancing a shot object
 	var newShot: Shot = Global.shotScn.instance()
 	newShot.setDirection(barrelDirection)
-	newShot.position = position
+	newShot.global_position = barrel.global_position
 	newShot.z_index = z_index - 1
 	get_tree().current_scene.call_deferred("add_child", newShot)
 	

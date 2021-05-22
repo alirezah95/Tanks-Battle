@@ -1,0 +1,174 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://Assets/Gfx/Items/barrelRed_top.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Gfx/Items/barrelGreen_top.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Gfx/Items/crateMetal.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Gfx/Items/crateWood.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Gfx/Items/barrelRust_top.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Gfx/Items/treeBrown_large.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Gfx/Items/sandbagBrown.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Gfx/Items/treeGreen_twigs.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Gfx/Items/treeBrown_small.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Gfx/Items/barricadeWood.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Gfx/Items/sandbagBeige.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Gfx/Items/treeGreen_large.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Gfx/Items/treeGreen_small.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Gfx/Items/barrelBlack_top.png" type="Texture" id=15]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 18.5707
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 32.0
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 18.6505
+
+[node name="Node2D" type="Node2D"]
+
+[node name="barrelBlack_top" type="Sprite" parent="."]
+position = Vector2( 192, 128 )
+texture = ExtResource( 15 )
+centered = false
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="barrelBlack_top"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="barrelBlack_top/StaticBody2D2"]
+position = Vector2( 18.8267, 18.9151 )
+shape = SubResource( 1 )
+
+[node name="barrelGreen_top" type="Sprite" parent="."]
+position = Vector2( 64, 128 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="barrelGreen_top"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="barrelGreen_top/StaticBody2D2"]
+position = Vector2( 18.8267, 18.9151 )
+shape = SubResource( 1 )
+
+[node name="barrelRed_top" type="Sprite" parent="."]
+position = Vector2( 0, 128 )
+texture = ExtResource( 1 )
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="barrelRed_top"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="barrelRed_top/StaticBody2D"]
+position = Vector2( 18.8267, 18.9151 )
+shape = SubResource( 1 )
+
+[node name="barrelRust_top" type="Sprite" parent="."]
+position = Vector2( 128, 128 )
+texture = ExtResource( 5 )
+centered = false
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="barrelRust_top"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="barrelRust_top/StaticBody2D2"]
+position = Vector2( 18.8267, 18.9151 )
+shape = SubResource( 1 )
+
+[node name="barricadeWood" type="Sprite" parent="."]
+position = Vector2( 0, 192 )
+texture = ExtResource( 10 )
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="barricadeWood"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="barricadeWood/StaticBody2D"]
+polygon = PoolVector2Array( 5.616, -0.312012, 37.6503, -0.237686, 45.3058, 6.89755, 45.2315, 38.3372, 38.1705, 44.8779, 7.84576, 44.9522, 0.115915, 37.2967, 0.413218, 7.71513 )
+
+[node name="crateMetal" type="Sprite" parent="."]
+position = Vector2( 128, 0 )
+texture = ExtResource( 3 )
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="crateMetal"]
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="crateMetal/StaticBody2D"]
+polygon = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
+
+[node name="crateWood" type="Sprite" parent="."]
+position = Vector2( 192, 0 )
+texture = ExtResource( 4 )
+centered = false
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="crateWood"]
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="crateWood/StaticBody2D2"]
+polygon = PoolVector2Array( 0, 0, 64, 0, 64, 64, 0, 64 )
+
+[node name="sandbagBeige" type="Sprite" parent="."]
+position = Vector2( 128, 64 )
+texture = ExtResource( 11 )
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="sandbagBeige"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="sandbagBeige/StaticBody2D"]
+polygon = PoolVector2Array( 0, 0, 50.7575, 0, 50.7575, 34.7268, 0, 34.8012 )
+
+[node name="sandbagBrown" type="Sprite" parent="."]
+position = Vector2( 192, 64 )
+texture = ExtResource( 7 )
+centered = false
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="sandbagBrown"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="sandbagBrown/StaticBody2D2"]
+polygon = PoolVector2Array( 0, 0, 50.7575, 0, 50.7575, 34.7268, 0, 34.8012 )
+
+[node name="treeBrown_large" type="Sprite" parent="."]
+position = Vector2( 64, 0 )
+texture = ExtResource( 6 )
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="treeBrown_large"]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="treeBrown_large/StaticBody2D"]
+position = Vector2( 32, 32 )
+shape = SubResource( 2 )
+
+[node name="treeBrown_small" type="Sprite" parent="."]
+position = Vector2( 64, 64 )
+texture = ExtResource( 9 )
+centered = false
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="treeBrown_small"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="treeBrown_small/StaticBody2D2"]
+position = Vector2( 20.1051, 19.7387 )
+shape = SubResource( 3 )
+
+[node name="treeGreen_large" type="Sprite" parent="."]
+texture = ExtResource( 12 )
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="treeGreen_large"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="treeGreen_large/StaticBody2D"]
+position = Vector2( 32, 32 )
+shape = SubResource( 2 )
+
+[node name="treeGreen_small" type="Sprite" parent="."]
+position = Vector2( 0, 64 )
+texture = ExtResource( 14 )
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="treeGreen_small"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="treeGreen_small/StaticBody2D"]
+position = Vector2( 20.1051, 19.7387 )
+shape = SubResource( 3 )
+
+[node name="treeGreen_twigs" type="Sprite" parent="."]
+position = Vector2( 64, 192 )
+texture = ExtResource( 8 )
+centered = false
+
+[node name="StaticBody2D" type="StaticBody2D" parent="treeGreen_twigs"]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="treeGreen_twigs/StaticBody2D"]
+polygon = PoolVector2Array( 5.69514, 0.276459, -0.485382, 24.1089, 15.0127, 36.2827, 39.0325, 31.179, 38.0492, 5.42691, 29.1998, -0.00445557 )
