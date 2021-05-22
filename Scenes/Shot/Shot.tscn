@@ -7,13 +7,13 @@
 script = ExtResource( 1 )
 
 [node name="ShotSprite" type="Sprite" parent="."]
-scale = Vector2( 0.6, 0.6 )
+scale = Vector2( 0.8, 0.8 )
 texture = ExtResource( 2 )
 flip_v = true
 
 [node name="ShotRay" type="RayCast2D" parent="."]
 enabled = true
-cast_to = Vector2( 15, 0 )
+cast_to = Vector2( 20, 0 )
 
 [node name="Visibility" type="VisibilityNotifier2D" parent="."]
-rect = Rect2( -20, -10, 40, 20 )
+rect = Rect2( -25, -10, 50, 20 )

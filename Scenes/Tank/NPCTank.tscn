@@ -19,10 +19,10 @@ region_enabled = true
 region_rect = Rect2( 8.93055, -0.230221, 99.8742, 93.5631 )
 
 [node name="BarrelSprite" parent="." index="1"]
-position = Vector2( -2.18266, 0 )
+position = Vector2( 15, 0 )
 scale = Vector2( 1.4, 1.1 )
 texture = ExtResource( 4 )
-offset = Vector2( 45, 0 )
+offset = Vector2( 30, 0 )
 flip_h = true
 
 [node name="TankCollision" parent="." index="2"]
@@ -30,7 +30,10 @@ visible = false
 position = Vector2( -4.56378, 0 )
 shape = SubResource( 1 )
 
+[node name="ShotLockTimer" parent="." index="5"]
+wait_time = 1.5
+
 [node name="NPCVisibilityEnabler" type="VisibilityEnabler2D" parent="." index="6"]
-rect = Rect2( -35, -35, 70, 70 )
+rect = Rect2( -40, -35, 75, 70 )
 process_parent = true
 physics_process_parent = true
