@@ -9,8 +9,6 @@ const MAX_ACCEL: float = 5.0
 const MIN_ACCEL: float = -MAX_ACCEL
 # Breaks force
 const BREAKS_FORCE: float = 7.0
-# Player tank move current speed
-var speed: float = 0
 # Tank friction value
 var friction: float = 0.6
 # Forward acceleration value
@@ -62,8 +60,8 @@ func _physics_process(delta: float) -> void:
 	direction = Vector2(-cos(tank.rotation), -sin(tank.rotation))
 	
 	# Using mouse cursor position the tank barrel direction is set.
-	barrelDirection = Vector2.ZERO.direction_to(get_local_mouse_position())
-	barrel.rotation = barrelDirection.angle()
+	shot_direction = Vector2.ZERO.direction_to(get_local_mouse_position())
+	barrel.rotation = shot_direction.angle()
 	
 	if not isShotLocked:
 		if Input.is_action_pressed("shot"):
@@ -81,7 +79,7 @@ func _shot() -> void:
 	
 	# Instancing a shot object
 	var newShot: Shot = Global.playerShotScn.instance()
-	newShot.setDirection(barrelDirection)
+	newShot.setDirection(shot_direction)
 	newShot.position = position
 	newShot.z_index = z_index - 1
 	get_tree().current_scene.call_deferred("add_child", newShot)

@@ -7,7 +7,7 @@ onready var sprt = $ShotSprite
 onready var visibility = $Visibility
 
 # Shot move speed
-var speed: float = 2000.0
+var speed: float = 1200.0
 # Shot move direction in x and y coordinates.
 var direction: Vector2 = Vector2(0, -1)
 # The amount of damage this shot applys to target
