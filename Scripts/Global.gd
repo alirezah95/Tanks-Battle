@@ -9,3 +9,5 @@ onready var playerShotScn: PackedScene = (
 const PI_2: float = PI * 2
 
 var player: PlayerTank = null
+
+var level: Level = null

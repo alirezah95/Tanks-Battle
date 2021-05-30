@@ -18,11 +18,11 @@ const PATROL_SPEED: float = 80.0
 var barrel_turn_dir: int = +1 # Increasing -> clock wise turn
 # Holds npc fields of view which indicates how close the player can get before
 # npc shots it. The value is in squared value.
-var npc_shot_fov: float = 400 * 400
+var npc_shot_fov: float = 450 * 450
 # Holds npc notice (chase) fov, if player gets in the fov, npc will try to 
 # get close to it in order to make a shot (player must be in shot fov for npc to
 # shot it)
-var npc_chase_fov: float = 550 * 550
+var npc_chase_fov: float = 900 * 900
 # The area radius that the tank can PATROL in.
 var npc_patrol_radius: float = 300 * 300
 # Holds the patroling rectangle points
@@ -37,10 +37,24 @@ var curr_patrol_point: int = 0
 # player and the player get out of the chase fov, they return to this position
 # if their are not destroyed.
 var initial_position: Vector2 = Vector2()
+# Path to player
+var path_to_player: Array
+# Index of next point in path to player
+var path_to_plalyer_point_index: int = 0
+# Reference to level astar node
+var lvl_astar: AStar2D
+# Returning path array
+var return_path: Array
+# Index of next point in return path
+var return_path_point_indx: int = 0
+# Holds the move direction vector, which is used in both RETURNING and 
+# CHASING_PALYER states.
+var move_angle: float
 
 
 
 func _ready() -> void:
+	speed = 125
 	patrol_points.resize(4)
 	randomize()
 	var increasing_angle: int = randi() & 0x1
@@ -72,14 +86,29 @@ func _process(delta: float) -> void:
 		npc_current_state = NPCState.SHOTING_PLAYER
 	elif player_dist_squared < npc_chase_fov:
 		npc_current_state = NPCState.CHASING_PLAYER
-	elif npc_current_state != NPCState.PATROLING:
-		if (position - initial_position).length_squared() > npc_patrol_radius:
-			npc_current_state = NPCState.RETURNING
-		else:
-			npc_current_state = NPCState.PATROLING
 	else:
-		npc_current_state = NPCState.PATROLING
+		match npc_current_state:
+			NPCState.RETURNING:
+				if (position - patrol_points[curr_patrol_point]
+						).length_squared() < 300:
+					npc_current_state = NPCState.PATROLING
+			NPCState.PATROLING:
+				pass
+			_:
+				if ((position - initial_position).length_squared()
+						> npc_patrol_radius):
+					if return_path.size() == 0:
+						_update_return_path()
+					npc_current_state = NPCState.RETURNING
+				else:
+					npc_current_state = NPCState.PATROLING
 	
+	# Keeping rotation in between -pi and pi, because it's one of the assumption
+	# in our functions.
+	if rotation > 3.1415:
+		rotation -= 6.2831
+	elif rotation < -3.1415:
+		rotation += 6.2831
 	
 	# Updating states
 	match npc_current_state:
@@ -92,27 +121,8 @@ func _process(delta: float) -> void:
 				patrol_direction = (patrol_points[curr_patrol_point] - position
 					).normalized()
 				patrol_look_angle = patrol_direction.angle()
-				
-				var look_angle_2pi: float = ((patrol_look_angle - 6.2831) if 
-					patrol_look_angle > 0 else (patrol_look_angle + 6.2831))
-				
-				if rotation > 3.1415:
-					rotation -= 6.2831
-				elif rotation < -3.1415:
-					rotation += 6.2831
-				
-				# Finding the shortest direction to rotate
-				var diff_to_angle: float = abs(rotation - patrol_look_angle)
-				var diff_to_2pi_angle: float
-				if patrol_look_angle > 0:
-					diff_to_2pi_angle = abs(rotation - look_angle_2pi)
-				else:
-					diff_to_2pi_angle = abs(rotation - look_angle_2pi)
-				
-				if diff_to_angle <= diff_to_2pi_angle:
-					pass # Do nothing
-				else:
-					patrol_look_angle = look_angle_2pi
+				patrol_look_angle = _get_nearest_angle_to_rotate(rotation,
+					patrol_look_angle)
 				
 				patrol_is_rotating = true
 			else:
@@ -123,7 +133,7 @@ func _process(delta: float) -> void:
 						rotation = move_toward(rotation, patrol_look_angle,
 							delta)
 				else:
-					position += delta * PATROL_SPEED * patrol_direction
+					move_and_slide(PATROL_SPEED * patrol_direction)
 			
 			if barrel_turn_dir == +1:
 				barrel.rotation += BARREL_TURN_SPEED * delta / 2
@@ -134,26 +144,121 @@ func _process(delta: float) -> void:
 				if barrel.rotation < -3.14:
 					barrel_turn_dir = +1
 		NPCState.CHASING_PLAYER:
-			pass
+			if return_path.size() > 0:
+				return_path.clear()
+			# Getting closest point id to position and player position
+			var cls_pos_id: int = Global.level.astar.get_closest_point(position)
+			var cls_player_pos_id: int = (
+				Global.level.astar.get_closest_point(Global.player.position))
+			
+			path_to_player = Global.level.astar.get_point_path(
+				cls_pos_id,
+				cls_player_pos_id)
+			
+			if path_to_player.size() >= 2:
+				var move_dir: Vector2 = (
+					path_to_player[1] - position)
+				rotation = move_toward(rotation, move_dir.angle(), delta * 2.5)
+				move_and_slide(Vector2(1, 0).rotated(rotation) * speed)
+				var barrel_angle_to_player: float = barrel.get_angle_to(
+					Global.player.global_position)
+				barrel.rotation = move_toward(barrel.rotation,
+					barrel.rotation + barrel_angle_to_player, delta)
 		NPCState.SHOTING_PLAYER:
+			if return_path.size() > 0:
+				return_path.clear()
 			var barrel_angle_to_player: float = barrel.get_angle_to(
 			Global.player.global_position)
 			barrel.rotation = move_toward(barrel.rotation,
 				barrel.rotation + barrel_angle_to_player, delta / 1.3)
 			_npc_shot_at_palyer(barrel_angle_to_player)
 		NPCState.RETURNING:
-			pass
+			if return_path.size() >= 2:
+				move_angle = (return_path[return_path_point_indx] - position
+						).angle()
+				move_angle = _get_nearest_angle_to_rotate(rotation, move_angle)
+				rotation = move_toward(rotation, move_angle, delta * 5)
+				barrel.rotation = move_toward(barrel.rotation, 0, delta)
+				# Speed ratio is used to decrease tank speed on turns
+				var speed_ratio: float = 1
+				var diff_angle: float = abs(move_angle - rotation)
+				if (diff_angle) > 0.2 or (diff_angle) < -0.2 :
+					speed_ratio = .4
+				move_and_slide(Vector2(1, 0).rotated(rotation)
+					* speed * speed_ratio)
+				
+				if ((position - return_path[return_path_point_indx]
+						).length_squared() < 400):
+					return_path_point_indx += 1
+					if return_path_point_indx >= return_path.size():
+						npc_current_state = NPCState.PATROLING
+						return_path.clear()
 	
 	return
 	
+
+
+
+func _update_return_path() -> void:
+	print("updating return path")
+	# Getting closest point id to position and return position
+	var cls_pos_id: int = Global.level.astar.get_closest_point(position)
+	var cls_player_pos_id: int = (
+		Global.level.astar.get_closest_point(patrol_points[curr_patrol_point]))
+	
+	return_path = Global.level.astar.get_point_path(
+		cls_pos_id,
+		cls_player_pos_id)
+	
+	return_path_point_indx = 1
+	
+	move_angle = (return_path[return_path_point_indx] - position
+		).angle()
+	
+	return
+	
+
+
+#func _draw() -> void:
+#	if return_path.size() > 0:
+#		for i in range(return_path.size() - 1):
+#			draw_line(to_local(return_path[i]), to_local(return_path[i + 1]),
+#			Color.blue, 6)
+#	else:
+#		for i in range(path_to_player.size() - 1):
+#			draw_line(to_local(path_to_player[i]), to_local(path_to_player[i + 1]),
+#				Color.blue, 6)
+#
+#	return
+#
 
 
 func _npc_shot_at_palyer(barrel_angle_to_player: float) -> void:
-	if (barrel_angle_to_player < 0.4 and barrel_angle_to_player > -0.4
-			and not isShotLocked):
-		var brrl_angle: float = rotation + barrel.rotation
-		barrelDirection = Vector2(cos(brrl_angle), sin(brrl_angle))
+	if barrel_angle_to_player < 0.4 and barrel_angle_to_player > -0.4:
 		_shot()
 	
 	return
+	
+
+
+func _estimate_closest_point_to(_pos: Vector2) -> int:
+	var closest_tile_pos: Vector2 = Vector2(int(_pos.x) >> 6, int(_pos.y) >> 6)
+	closest_tile_pos -= Global.level.grnd_tile.get_used_cells()[0]
+	
+	return int((int(closest_tile_pos.x) << 6) + closest_tile_pos.y)
+	
+
+
+func _get_nearest_angle_to_rotate(angle: float, target_angle: float) -> float:
+	var target_angle_2pi: float = ((target_angle - 6.2831) if target_angle > 0
+		else (target_angle + 6.2831))
+	
+	# finds the shortest direction to rotate
+	var diff_to_target_angle: float = abs(angle - target_angle)
+	var diff_to_target_angle_2pi: float = abs(angle - target_angle_2pi)
+	
+	if diff_to_target_angle <= diff_to_target_angle_2pi:
+		return target_angle
+	else:
+		return target_angle_2pi
 	
