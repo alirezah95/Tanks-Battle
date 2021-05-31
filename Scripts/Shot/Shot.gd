@@ -3,7 +3,7 @@ extends Node2D
 class_name Shot
 
 onready var ray = $ShotRay
-onready var sprt = $ShotSprite
+onready var sprt = $ButlletSprite
 onready var visibility = $Visibility
 
 # Shot move speed
@@ -17,6 +17,7 @@ var damage: float = 400.0
 
 func _ready() -> void:
 	pass
+	
 
 
 func setDirection(dir: Vector2) -> void:
@@ -30,7 +31,6 @@ func setDirection(dir: Vector2) -> void:
 
 func _physics_process(delta: float) -> void:
 	position += direction * (speed * delta)
-	
 	
 	if not visibility.is_on_screen():
 		sprt.hide()

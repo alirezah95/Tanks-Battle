@@ -39,8 +39,13 @@ var curr_patrol_point: int = 0
 var initial_position: Vector2 = Vector2()
 # Path to player
 var path_to_player: Array
+# Holds if the path to player is updated
+var is_path_to_player_update: bool = false
 # Index of next point in path to player
-var path_to_plalyer_point_index: int = 0
+var path_to_player_point_index: int = 1
+# Holds the threshold that the player needs to move in order for the 
+# path_to_player array to be updated. (in squared value)
+var path_to_player_update_threshold: float = 200 * 200
 # Reference to level astar node
 var lvl_astar: AStar2D
 # Returning path array
@@ -77,7 +82,7 @@ func _ready() -> void:
 	
 
 
-func _process(delta: float) -> void:
+func _handle_movement(delta: float) -> void:
 	# Regardless of npc state we need distance to player
 	var player_dist_squared: float = (
 		(position - Global.player.position).length_squared())
@@ -86,6 +91,8 @@ func _process(delta: float) -> void:
 		npc_current_state = NPCState.SHOTING_PLAYER
 	elif player_dist_squared < npc_chase_fov:
 		npc_current_state = NPCState.CHASING_PLAYER
+		if not is_path_to_player_update:
+			_update_path_to_player()
 	else:
 		match npc_current_state:
 			NPCState.RETURNING:
@@ -104,7 +111,7 @@ func _process(delta: float) -> void:
 					npc_current_state = NPCState.PATROLING
 	
 	# Keeping rotation in between -pi and pi, because it's one of the assumption
-	# in our functions.
+	# in some of our functions.
 	if rotation > 3.1415:
 		rotation -= 6.2831
 	elif rotation < -3.1415:
@@ -146,25 +153,32 @@ func _process(delta: float) -> void:
 		NPCState.CHASING_PLAYER:
 			if return_path.size() > 0:
 				return_path.clear()
-			# Getting closest point id to position and player position
-			var cls_pos_id: int = Global.level.astar.get_closest_point(position)
-			var cls_player_pos_id: int = (
-				Global.level.astar.get_closest_point(Global.player.position))
 			
-			path_to_player = Global.level.astar.get_point_path(
-				cls_pos_id,
-				cls_player_pos_id)
+			# If player has moved from the last point in path to player 
+			# at least as much as path_to_player_update_threshold then 
+			# the path to player needs to be updated.
+			if ((path_to_player[path_to_player.size() - 1]
+					- Global.player.position).length_squared()
+					> path_to_player_update_threshold):
+				_update_path_to_player()
 			
 			if path_to_player.size() >= 2:
 				var move_dir: Vector2 = (
-					path_to_player[1] - position)
-				rotation = move_toward(rotation, move_dir.angle(), delta * 2.5)
+					path_to_player[path_to_player_point_index] - position)
+				move_angle = _get_nearest_angle_to_rotate(rotation,
+					move_dir.angle())
+				rotation = move_toward(rotation, move_angle, delta * 2.5)
 				move_and_slide(Vector2(1, 0).rotated(rotation) * speed)
 				var barrel_angle_to_player: float = barrel.get_angle_to(
 					Global.player.global_position)
 				barrel.rotation = move_toward(barrel.rotation,
 					barrel.rotation + barrel_angle_to_player, delta)
+				if move_dir.length_squared() < 100:
+					path_to_player_point_index += 1
 		NPCState.SHOTING_PLAYER:
+			if is_path_to_player_update:
+				is_path_to_player_update = false
+			
 			if return_path.size() > 0:
 				return_path.clear()
 			var barrel_angle_to_player: float = barrel.get_angle_to(
@@ -173,6 +187,9 @@ func _process(delta: float) -> void:
 				barrel.rotation + barrel_angle_to_player, delta / 1.3)
 			_npc_shot_at_palyer(barrel_angle_to_player)
 		NPCState.RETURNING:
+			if is_path_to_player_update:
+				is_path_to_player_update = false
+			
 			if return_path.size() >= 2:
 				move_angle = (return_path[return_path_point_indx] - position
 						).angle()
@@ -198,6 +215,24 @@ func _process(delta: float) -> void:
 	
 
 
+func _update_path_to_player() -> void:
+	# Getting closest point id to position and player position
+	var cls_pos_id: int = Global.level.astar.get_closest_point(position)
+	var cls_player_pos_id: int = (
+		Global.level.astar.get_closest_point(Global.player.position))
+	
+	path_to_player.clear()
+	path_to_player = Global.level.astar.get_point_path(
+		cls_pos_id,
+		cls_player_pos_id)
+	
+	if path_to_player.size() > 1:
+		path_to_player_point_index = 1
+		is_path_to_player_update = true
+	
+	return
+	
+
 
 func _update_return_path() -> void:
 	print("updating return path")
@@ -210,27 +245,22 @@ func _update_return_path() -> void:
 		cls_pos_id,
 		cls_player_pos_id)
 	
-	return_path_point_indx = 1
-	
-	move_angle = (return_path[return_path_point_indx] - position
-		).angle()
-	
 	return
 	
 
 
-#func _draw() -> void:
-#	if return_path.size() > 0:
-#		for i in range(return_path.size() - 1):
-#			draw_line(to_local(return_path[i]), to_local(return_path[i + 1]),
-#			Color.blue, 6)
-#	else:
-#		for i in range(path_to_player.size() - 1):
-#			draw_line(to_local(path_to_player[i]), to_local(path_to_player[i + 1]),
-#				Color.blue, 6)
-#
-#	return
-#
+func _draw() -> void:
+	if return_path.size() > 0:
+		for i in range(return_path.size() - 1):
+			draw_line(to_local(return_path[i]), to_local(return_path[i + 1]),
+			Color.blue, 6)
+	else:
+		for i in range(path_to_player.size() - 1):
+			draw_line(to_local(path_to_player[i]), to_local(path_to_player[i + 1]),
+				Color.blue, 6)
+	
+	return
+	
 
 
 func _npc_shot_at_palyer(barrel_angle_to_player: float) -> void:
