@@ -47,10 +47,21 @@ func _ready() -> void:
 			var top_cell: int = (cell_positive.x - 1) * 64 + cell_positive.y
 			if astar.has_point(top_cell):
 				astar.connect_points(cell_id, top_cell)
-			
+
 			var left_cell: int = cell_positive.x * 64 + (cell_positive.y - 1)
 			if astar.has_point(left_cell):
 				astar.connect_points(cell_id, left_cell)
+			
+			var top_left_cell: int = ((cell_positive.x - 1) * 64
+					+ (cell_positive.y - 1))
+			if astar.has_point(top_left_cell):
+				astar.connect_points(cell_id, top_left_cell)
+			
+			var top_right_cell: int = ((cell_positive.x - 1) * 64
+					+ (cell_positive.y + 1))
+			if astar.has_point(top_right_cell):
+				astar.connect_points(cell_id, top_right_cell)
+			
 		else:
 			continue
 	
