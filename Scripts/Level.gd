@@ -68,11 +68,21 @@ func _ready() -> void:
 	return
 	
 
+func _process(delta: float) -> void:
+	update()
+	
+
 
 #func _draw() -> void:
-#	for id in astar.get_points():
-#		draw_circle(astar.get_point_position(id), 20, Color.black)
+#	var move_direction: Vector2 = npc.move_direction
+#	draw_line(npc.position + move_direction, 
+#		npc.position + move_direction * 150, Color.blue, 5)
+#	draw_circle(npc.position + move_direction * 150, 10, Color.blue)
 #
-#	return
+#	var patrol_direction: Vector2 = npc.patrol_direction
+#	draw_line(npc.position + patrol_direction,
+#		npc.position + patrol_direction * 150, Color.red, 5)
+#	draw_circle(npc.position + patrol_direction * 150, 10, Color.red)
 #
-
+#	for pnt in npc.patrol_points:
+#		draw_circle(pnt, 20, Color.black)

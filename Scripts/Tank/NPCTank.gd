@@ -18,11 +18,11 @@ const PATROL_SPEED: float = 80.0
 var barrel_turn_dir: int = +1 # Increasing -> clock wise turn
 # Holds npc fields of view which indicates how close the player can get before
 # npc shots it. The value is in squared value.
-var npc_shot_fov: float = 450 * 450
+var npc_shot_fov: float = 40 * 40
 # Holds npc notice (chase) fov, if player gets in the fov, npc will try to 
 # get close to it in order to make a shot (player must be in shot fov for npc to
 # shot it)
-var npc_chase_fov: float = 900 * 900
+var npc_chase_fov: float = 800 * 800
 # The area radius that the tank can PATROL in.
 var npc_patrol_radius: float = 300 * 300
 # Holds the patroling rectangle points
@@ -32,7 +32,7 @@ var patrol_direction: Vector2
 var patrol_look_angle: float
 var patrol_is_rotating: bool = false
 # Holds which patrol point are we at or going to know
-var curr_patrol_point: int = 0
+var curr_patrol_point: int = -1
 # Npc tanks will store their initial position, in case that if they chase the
 # player and the player get out of the chase fov, they return to this position
 # if their are not destroyed.
@@ -55,6 +55,8 @@ var return_path_point_indx: int = 0
 # Holds the move direction vector, which is used in both RETURNING and 
 # CHASING_PALYER states.
 var move_angle: float
+# Holds npc move direction vector used in chase, return and patrol states
+var move_direction: Vector2 = Vector2(1, 0)
 
 
 
@@ -74,8 +76,7 @@ func _ready() -> void:
 			1:
 				pnt_angle += 1.5708
 	
-	patrol_direction = (patrol_points[0] - position).normalized()
-	look_at(patrol_points[curr_patrol_point])
+	_update_patrol_direction()
 	initial_position = position
 	
 	return
@@ -98,6 +99,7 @@ func _handle_movement(delta: float) -> void:
 			NPCState.RETURNING:
 				if (position - patrol_points[curr_patrol_point]
 						).length_squared() < 300:
+					_update_patrol_direction()
 					npc_current_state = NPCState.PATROLING
 			NPCState.PATROLING:
 				pass
@@ -108,6 +110,7 @@ func _handle_movement(delta: float) -> void:
 						_update_return_path()
 					npc_current_state = NPCState.RETURNING
 				else:
+					_update_patrol_direction()
 					npc_current_state = NPCState.PATROLING
 	
 	# Keeping rotation in between -pi and pi, because it's one of the assumption
@@ -122,25 +125,17 @@ func _handle_movement(delta: float) -> void:
 		NPCState.PATROLING:
 			if ((position - patrol_points[curr_patrol_point]).length_squared()
 					<= 300):
-				curr_patrol_point += 1
-				if curr_patrol_point == 4:
-					curr_patrol_point = 0
-				patrol_direction = (patrol_points[curr_patrol_point] - position
-					).normalized()
-				patrol_look_angle = patrol_direction.angle()
-				patrol_look_angle = _get_nearest_angle_to_rotate(rotation,
-					patrol_look_angle)
-				
-				patrol_is_rotating = true
+				_update_patrol_direction()
 			else:
 				if patrol_is_rotating:
-					if abs(rotation - patrol_look_angle) < 0.05:
+					if abs(rotation - patrol_look_angle) < 0.01:
 						patrol_is_rotating = false
 					else:
-						rotation = move_toward(rotation, patrol_look_angle,
-							delta)
+						move_direction = move_direction.move_toward(
+							patrol_direction, delta * 3)
+						rotation = move_direction.angle()
 				else:
-					move_and_slide(PATROL_SPEED * patrol_direction)
+					move_and_slide(PATROL_SPEED * move_direction)
 			
 			if barrel_turn_dir == +1:
 				barrel.rotation += BARREL_TURN_SPEED * delta / 2
@@ -161,19 +156,15 @@ func _handle_movement(delta: float) -> void:
 					- Global.player.position).length_squared()
 					> path_to_player_update_threshold):
 				_update_path_to_player()
-			
+			update()
 			if path_to_player.size() >= 2:
-				var move_dir: Vector2 = (
-					path_to_player[path_to_player_point_index] - position)
-				move_angle = _get_nearest_angle_to_rotate(rotation,
-					move_dir.angle())
-				rotation = move_toward(rotation, move_angle, delta * 2.5)
-				move_and_slide(Vector2(1, 0).rotated(rotation) * speed)
+				var diff_vec: Vector2 = _move_to(
+					path_to_player[path_to_player_point_index], delta)
 				var barrel_angle_to_player: float = barrel.get_angle_to(
 					Global.player.global_position)
 				barrel.rotation = move_toward(barrel.rotation,
 					barrel.rotation + barrel_angle_to_player, delta)
-				if move_dir.length_squared() < 100:
+				if diff_vec.length_squared() < 100:
 					path_to_player_point_index += 1
 		NPCState.SHOTING_PLAYER:
 			if is_path_to_player_update:
@@ -189,27 +180,45 @@ func _handle_movement(delta: float) -> void:
 		NPCState.RETURNING:
 			if is_path_to_player_update:
 				is_path_to_player_update = false
-			
+			update()
 			if return_path.size() >= 2:
-				move_angle = (return_path[return_path_point_indx] - position
-						).angle()
-				move_angle = _get_nearest_angle_to_rotate(rotation, move_angle)
-				rotation = move_toward(rotation, move_angle, delta * 5)
-				barrel.rotation = move_toward(barrel.rotation, 0, delta)
-				# Speed ratio is used to decrease tank speed on turns
-				var speed_ratio: float = 1
-				var diff_angle: float = abs(move_angle - rotation)
-				if (diff_angle) > 0.2 or (diff_angle) < -0.2 :
-					speed_ratio = .4
-				move_and_slide(Vector2(1, 0).rotated(rotation)
-					* speed * speed_ratio)
+				var diff_vec: Vector2 = _move_to(
+					return_path[return_path_point_indx], delta)
 				
-				if ((position - return_path[return_path_point_indx]
-						).length_squared() < 400):
+				barrel.rotation = move_toward(barrel.rotation, 0, delta)
+				if diff_vec.length_squared() < 100:
 					return_path_point_indx += 1
 					if return_path_point_indx >= return_path.size():
 						npc_current_state = NPCState.PATROLING
+						_update_patrol_direction()
 						return_path.clear()
+				
+	
+	return
+	
+
+
+func _move_to(_new_position: Vector2, delta: float) -> Vector2:
+	var new_move_dir: Vector2 = (_new_position - position)
+	move_direction = move_direction.move_toward(
+		new_move_dir.normalized(), delta * 5)
+	var angle: float = move_direction.angle()
+	rotation = angle
+	move_and_slide(move_direction * speed)
+	
+	return new_move_dir
+	
+
+
+func _update_patrol_direction() -> void:
+	curr_patrol_point += 1
+	if curr_patrol_point == 4:
+		curr_patrol_point = 0
+	patrol_direction = (patrol_points[curr_patrol_point] - position
+		).normalized()
+	patrol_look_angle = patrol_direction.angle()
+	
+	patrol_is_rotating = true
 	
 	return
 	
@@ -244,6 +253,8 @@ func _update_return_path() -> void:
 	return_path = Global.level.astar.get_point_path(
 		cls_pos_id,
 		cls_player_pos_id)
+	
+	return_path_point_indx = 1
 	
 	return
 	
