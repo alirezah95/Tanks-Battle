@@ -20,12 +20,13 @@ var direction: Vector2
 
 func _ready() -> void:
 	Global.player = self
+	health = 10000
 	
 	return
 	
 
 
-func _physics_process(delta: float) -> void:
+func _handle_movement(delta: float) -> void:
 	# Using up, down keys to move the tank
 	var input_accel: float = (Input.get_action_strength("ui_down") - 
 			Input.get_action_strength("ui_up"))
@@ -73,18 +74,14 @@ func _physics_process(delta: float) -> void:
 	
 
 
-func _shot() -> void:
-	isShotLocked = true
-	shotLockTmr.start()
-	
+func _instance_shot_object() -> Shot:
 	# Instancing a shot object
 	var newShot: Shot = Global.playerShotScn.instance()
 	newShot.setDirection(shot_direction)
 	newShot.position = position
 	newShot.z_index = z_index - 1
-	get_tree().current_scene.call_deferred("add_child", newShot)
 	
-	return
+	return newShot
 	
 
 
@@ -108,6 +105,16 @@ func _apply_breaks() -> void:
 		speed -= BREAKS_FORCE
 	else:
 		speed = 0.0
+	
+	return
+	
+
+
+func _on_DestroyDelay_timeout() -> void:
+	# Explosion particle is finieshed, queueing tank to free.
+	queue_free()
+	
+	get_tree().reload_current_scene()
 	
 	return
 	
