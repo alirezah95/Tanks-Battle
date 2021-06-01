@@ -33,6 +33,7 @@ scale = Vector2( 0.8, 0.8 )
 texture = ExtResource( 2 )
 
 [node name="TankCollision" type="CollisionShape2D" parent="."]
+visible = false
 
 [node name="ExplosionParticle" type="Particles2D" parent="."]
 visible = false

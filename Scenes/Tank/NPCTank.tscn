@@ -26,7 +26,6 @@ offset = Vector2( 30, 0 )
 flip_h = true
 
 [node name="TankCollision" parent="." index="2"]
-visible = false
 position = Vector2( -4.56378, 0 )
 shape = SubResource( 1 )
 

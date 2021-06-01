@@ -2,10 +2,12 @@ extends "res://Scripts/Tank/Tank.gd"
 
 class_name PlayerTank
 
+onready var camera: Camera2D = $PlayerCamera
+
 # Max speed value, tank speed cant go higher than this value
-const MAX_SPEED: float = 300.0
+const MAX_SPEED: float = 600.0
 # Maximum and Minimum acceleration
-const MAX_ACCEL: float = 5.0
+const MAX_ACCEL: float = 7.0
 const MIN_ACCEL: float = -MAX_ACCEL
 # Breaks force
 const BREAKS_FORCE: float = 7.0
