@@ -18,7 +18,7 @@ const PATROL_SPEED: float = 80.0
 var barrel_turn_dir: int = +1 # Increasing -> clock wise turn
 # Holds npc fields of view which indicates how close the player can get before
 # npc shots it. The value is in squared value.
-var npc_shot_fov: float = 40 * 40
+var npc_shot_fov: float = 400 * 400
 # Holds npc notice (chase) fov, if player gets in the fov, npc will try to 
 # get close to it in order to make a shot (player must be in shot fov for npc to
 # shot it)
@@ -203,7 +203,7 @@ func _handle_movement(delta: float) -> void:
 func _move_to(_new_position: Vector2, delta: float) -> Vector2:
 	var new_move_dir: Vector2 = (_new_position - position)
 	move_direction = move_direction.move_toward(
-		new_move_dir.normalized(), delta * 5)
+		new_move_dir.normalized(), delta * 3)
 	var angle: float = move_direction.angle()
 	rotation = angle
 	move_and_slide(move_direction * speed)
