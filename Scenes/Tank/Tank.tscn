@@ -27,9 +27,9 @@ script = ExtResource( 1 )
 [node name="BarrelSprite" type="Sprite" parent="."]
 
 [node name="ShotFireSprite" type="Sprite" parent="BarrelSprite"]
-visible = false
+modulate = Color( 1, 1, 1, 0 )
 show_behind_parent = true
-scale = Vector2( 1e-05, 1e-05 )
+scale = Vector2( 0.8, 0.8 )
 texture = ExtResource( 2 )
 
 [node name="TankCollision" type="CollisionShape2D" parent="."]
