@@ -22,7 +22,7 @@ var shot_direction: Vector2 = Vector2(0, -1)
 
 func _ready() -> void:
 	add_to_group("tank")
-	shotFireSprite.visible = false
+	shotFireSprite.modulate = Color.transparent
 	shotFireSprite.offset = Vector2(shotFireSprite.texture.get_size().x / 2, 0)
 	shotFireSprite.position = Vector2(
 		barrel.texture.get_size().x / 2, 0) + barrel.offset - Vector2(4, 0)
@@ -74,7 +74,7 @@ func _shot() -> void:
 	shotLockTmr.start()
 	
 	get_tree().current_scene.call_deferred("add_child", _instance_shot_object())
-	shotFireSprite.scale = Vector2(1, 1)
+	shotFireSprite.modulate = Color.white
 	animations.call_deferred("play", "ShotFire")
 	
 	return
