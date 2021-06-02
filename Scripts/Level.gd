@@ -11,7 +11,7 @@ var astar: AStar2D
 # Holds the top left index of used cell in ground tile.
 var top_left_cell: Vector2
 # Tile index difference
-var in_d: int = 2
+var in_d: int = 3
 
 
 
@@ -40,15 +40,15 @@ func _ready() -> void:
 			
 			# A tile position will be set as the graph node only if there is no item
 			# around it.
-			if (items_tile.get_cell(row, col) == -1 and
-					items_tile.get_cell(row - 1, col - 1) == -1 and
-					items_tile.get_cell(row - 1, col + 1) == -1 and
-					items_tile.get_cell(row + 1, col - 1) == -1 and
-					items_tile.get_cell(row + 1, col + 1) == -1 and
-					items_tile.get_cell(row, col - 1) == -1 and
-					items_tile.get_cell(row, col + 1) == -1 and
-					items_tile.get_cell(row - 1, col) == -1 and
-					items_tile.get_cell(row + 1, col) == -1):
+			if (items_tile.get_cell(col, row) == -1 and
+					items_tile.get_cell(col - 1, row - 1) == -1 and
+					items_tile.get_cell(col - 1, row + 1) == -1 and
+					items_tile.get_cell(col + 1, row - 1) == -1 and
+					items_tile.get_cell(col + 1, row + 1) == -1 and
+					items_tile.get_cell(col, row - 1) == -1 and
+					items_tile.get_cell(col, row + 1) == -1 and
+					items_tile.get_cell(col - 1, row) == -1 and
+					items_tile.get_cell(col + 1, row) == -1):
 				
 				astar.add_point(cell_id,
 					Vector2(col, row) * 64 + Vector2(32, 32))
@@ -79,7 +79,7 @@ func _ready() -> void:
 		row += in_d
 		col = top_left_cell.x
 	
-	print("A* node size is:  ", astar.get_point_count())
+#	print("A* node size is:  ", astar.get_point_count())
 	# Setting player camera limits
 	var water_rect2: Rect2 = $TileMaps/Water.get_used_rect()
 	Global.player.camera.limit_left = water_rect2.position.x * 128
@@ -92,11 +92,8 @@ func _ready() -> void:
 	return
 	
 
-func _process(delta: float) -> void:
-	update()
-	
 
-
+#
 #func _draw() -> void:
 #	var pnts: Array = astar.get_points()
 #	for p in pnts:

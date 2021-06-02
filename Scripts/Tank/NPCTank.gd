@@ -45,7 +45,7 @@ var is_path_to_player_update: bool = false
 var path_to_player_point_index: int = 1
 # Holds the threshold that the player needs to move in order for the 
 # path_to_player array to be updated. (in squared value)
-var path_to_player_update_threshold: float = 256 * 256
+var path_to_player_update_threshold: float = 192 * 192
 # Holds player last position which is used to check if path to player needs to
 # be updated
 var player_last_position: Vector2
@@ -158,7 +158,7 @@ func _handle_movement(delta: float) -> void:
 			if ((player_last_position - Global.player.position).length_squared()
 					> path_to_player_update_threshold):
 				_update_path_to_player()
-			
+			update()
 			if path_to_player.size() >= 2:
 				var diff_vec: Vector2 = _move_to(
 					path_to_player[path_to_player_point_index], delta)
@@ -177,7 +177,7 @@ func _handle_movement(delta: float) -> void:
 			var barrel_angle_to_player: float = barrel.get_angle_to(
 			Global.player.global_position)
 			barrel.rotation = move_toward(barrel.rotation,
-				barrel.rotation + barrel_angle_to_player, delta / 1.3)
+				barrel.rotation + barrel_angle_to_player, delta)
 			_npc_shot_at_palyer(barrel_angle_to_player)
 		NPCState.RETURNING:
 			if is_path_to_player_update:
@@ -186,7 +186,7 @@ func _handle_movement(delta: float) -> void:
 			if return_path.size() >= 2:
 				var diff_vec: Vector2 = _move_to(
 					return_path[return_path_point_indx], delta)
-				
+				update()
 				barrel.rotation = move_toward(barrel.rotation, 0, delta)
 				if diff_vec.length_squared() < 100:
 					return_path_point_indx += 1
@@ -264,18 +264,18 @@ func _update_return_path() -> void:
 	
 
 
-#func _draw() -> void:
-#	if return_path.size() > 0:
-#		for i in range(return_path.size() - 1):
-#			draw_line(to_local(return_path[i]), to_local(return_path[i + 1]),
-#			Color.blue, 6)
-#	else:
-#		for i in range(path_to_player.size() - 1):
-#			draw_line(to_local(path_to_player[i]), to_local(path_to_player[i + 1]),
-#				Color.blue, 6)
-#
-#	return
-#
+func _draw() -> void:
+	if return_path.size() > 0:
+		for i in range(return_path.size() - 1):
+			draw_line(to_local(return_path[i]), to_local(return_path[i + 1]),
+			Color.blue, 6)
+	else:
+		for i in range(path_to_player.size() - 1):
+			draw_line(to_local(path_to_player[i]), to_local(path_to_player[i + 1]),
+				Color.blue, 6)
+
+	return
+
 
 
 func _npc_shot_at_palyer(barrel_angle_to_player: float) -> void:

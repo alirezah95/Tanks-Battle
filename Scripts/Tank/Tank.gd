@@ -87,7 +87,7 @@ func _instance_shot_object() -> Shot:
 	shot_direction = Vector2(cos(barrel.global_rotation),
 		sin(barrel.global_rotation))
 	newShot.setDirection(shot_direction)
-	newShot.global_position = barrel.global_position
+	newShot.global_position = shotFireSprite.global_position
 	newShot.z_index = z_index - 1
 	
 	return newShot

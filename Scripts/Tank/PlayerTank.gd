@@ -5,7 +5,7 @@ class_name PlayerTank
 onready var camera: Camera2D = $PlayerCamera
 
 # Max speed value, tank speed cant go higher than this value
-const MAX_SPEED: float = 600.0
+const MAX_SPEED: float = 300.0
 # Maximum and Minimum acceleration
 const MAX_ACCEL: float = 7.0
 const MIN_ACCEL: float = -MAX_ACCEL
@@ -54,9 +54,9 @@ func _handle_movement(delta: float) -> void:
 	
 	# Apply turn
 	if speed < 5.0 && speed > -5.0:
-		tank.rotation += turnStr * delta * 0.4
+		tank.rotation += turnStr * delta * 0.8
 	else:
-		tank.rotation += turnStr * delta
+		tank.rotation += turnStr * delta * 1.6
 	
 	speed = clamp(speed, -MAX_SPEED, MAX_SPEED)
 	
@@ -80,7 +80,7 @@ func _instance_shot_object() -> Shot:
 	# Instancing a shot object
 	var newShot: Shot = Global.playerShotScn.instance()
 	newShot.setDirection(shot_direction)
-	newShot.position = position
+	newShot.global_position = shotFireSprite.global_position
 	newShot.z_index = z_index - 1
 	
 	return newShot
