@@ -43,12 +43,12 @@ emitting = false
 wait_time = 0.5
 one_shot = true
 
-[node name="ShotLockTimer" type="Timer" parent="."]
-wait_time = 0.7
+[node name="CoolDownTmr" type="Timer" parent="."]
+wait_time = 0.8
 one_shot = true
 
 [node name="Animations" type="AnimationPlayer" parent="."]
 anims/ShotFire = SubResource( 1 )
 
 [connection signal="timeout" from="DestroyDelay" to="." method="_on_DestroyDelay_timeout"]
-[connection signal="timeout" from="ShotLockTimer" to="." method="_on_ShotLockTimer_timeout"]
+[connection signal="timeout" from="CoolDownTmr" to="." method="_on_ShotLockTimer_timeout"]

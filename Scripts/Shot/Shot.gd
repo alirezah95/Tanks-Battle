@@ -40,7 +40,7 @@ func _physics_process(delta: float) -> void:
 		# Ray cast is collidint with wome bodies
 		var collider: Node = ray.get_collider() as Node
 		if collider.is_in_group("tank"):
-			collider.applyImpact(damage)
+			collider.apply_impact(damage)
 		
 		sprt.hide()
 		set_physics_process(false)

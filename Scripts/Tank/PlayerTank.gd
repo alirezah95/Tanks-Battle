@@ -66,7 +66,7 @@ func _handle_movement(delta: float) -> void:
 	shot_direction = Vector2.ZERO.direction_to(get_local_mouse_position())
 	barrel.rotation = shot_direction.angle()
 	
-	if not isShotLocked:
+	if not is_shot_locked:
 		if Input.is_action_pressed("shot"):
 			_shot()
 	
@@ -78,12 +78,12 @@ func _handle_movement(delta: float) -> void:
 
 func _instance_shot_object() -> Shot:
 	# Instancing a shot object
-	var newShot: Shot = Global.playerShotScn.instance()
-	newShot.setDirection(shot_direction)
-	newShot.global_position = shotFireSprite.global_position
-	newShot.z_index = z_index - 1
+	var new_shot: Shot = Global.playerShotScn.instance()
+	new_shot.setDirection(shot_direction)
+	new_shot.global_position = shot_fire_sprt.global_position
+	new_shot.z_index = z_index - 1
 	
-	return newShot
+	return new_shot
 	
 
 
@@ -112,7 +112,7 @@ func _apply_breaks() -> void:
 	
 
 
-func _on_DestroyDelay_timeout() -> void:
+func _on_destroy_delay_timeout() -> void:
 	# Explosion particle is finieshed, queueing tank to free.
 	queue_free()
 	
