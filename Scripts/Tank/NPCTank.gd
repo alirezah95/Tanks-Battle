@@ -22,7 +22,7 @@ var npc_shot_fov: float = 400 * 400
 # Holds npc notice (chase) fov, if player gets in the fov, npc will try to 
 # get close to it in order to make a shot (player must be in shot fov for npc to
 # shot it)
-var npc_chase_fov: float = 800 * 800
+var npc_chase_fov: float = 850 * 850
 # The area radius that the tank can PATROL in.
 var npc_patrol_radius: float = 300 * 300
 # Holds the patroling rectangle points
@@ -64,7 +64,7 @@ var move_direction: Vector2 = Vector2(1, 0)
 
 
 func _ready() -> void:
-	speed = 125
+	speed = 150
 	patrol_points.resize(4)
 	randomize()
 	var increasing_angle: int = randi() & 0x1
