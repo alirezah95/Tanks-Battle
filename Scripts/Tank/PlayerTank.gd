@@ -3,6 +3,7 @@ extends "res://Scripts/Tank/Tank.gd"
 class_name PlayerTank
 
 onready var camera: Camera2D = $PlayerCamera
+onready var healthBar: ProgressBar = $Control/HBox/HealthBar
 
 # Max speed value, tank speed cant go higher than this value
 const MAX_SPEED: float = 400.0
@@ -25,6 +26,10 @@ var is_fallen_into_see: bool = false
 func _ready() -> void:
 	Global.player = self
 	health = 10000
+	
+	healthBar.min_value = 0
+	healthBar.max_value = health
+	healthBar.value = health
 	
 	return
 	
@@ -120,6 +125,18 @@ func _apply_breaks() -> void:
 		speed -= BREAKS_FORCE
 	else:
 		speed = 0.0
+	
+	return
+	
+
+
+func apply_impact(damage: float) -> void:
+	.apply_impact(damage)
+	
+	healthBar.value = health
+	
+	if healthBar.value <= 3000:
+		healthBar.modulate = Color("cf0000")
 	
 	return
 	

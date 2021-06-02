@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scenes/Tank/Tank.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Tank/PlayerTank.gd" type="Script" id=2]
@@ -36,6 +36,15 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 0, 0, 0.768627, 0.352941 ), Color( 0, 0, 0.768627, 0 ) ]
 }
 
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
 [node name="PlayerTank" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
@@ -56,5 +65,34 @@ zoom = Vector2( 1.5, 1.5 )
 
 [node name="Animations" parent="." index="7"]
 anims/FallIntoSee = SubResource( 2 )
+
+[node name="Control" type="Control" parent="." index="8"]
+margin_left = -1440.0
+margin_top = -810.0
+margin_right = 1440.0
+margin_bottom = 810.0
+rect_min_size = Vector2( 2880, 1620 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBox" type="HBoxContainer" parent="Control" index="0"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthBar" type="ProgressBar" parent="Control/HBox" index="0"]
+modulate = Color( 0.0156863, 0.552941, 0.164706, 1 )
+margin_right = 600.0
+margin_bottom = 75.0
+rect_min_size = Vector2( 600, 75 )
+custom_styles/fg = SubResource( 4 )
+custom_styles/bg = SubResource( 5 )
+rounded = true
+percent_visible = false
 
 [connection signal="animation_finished" from="Animations" to="." method="_on_Animations_animation_finished"]

@@ -53,7 +53,7 @@ func _handle_movement(delta: float) -> void:
 
 func apply_impact(damage: float) -> void:
 	health -= damage
-	print(name + ": damage recieved: health: ", health)
+	
 	if health <= 0:
 		call_deferred("die")
 	
