@@ -9,4 +9,5 @@
 texture = ExtResource( 2 )
 
 [node name="ShotRay" parent="." index="1"]
-collision_mask = 2
+position = Vector2( -0.111359, -0.111362 )
+collision_mask = 10

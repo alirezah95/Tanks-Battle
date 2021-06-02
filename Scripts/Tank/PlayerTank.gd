@@ -5,7 +5,7 @@ class_name PlayerTank
 onready var camera: Camera2D = $PlayerCamera
 
 # Max speed value, tank speed cant go higher than this value
-const MAX_SPEED: float = 300.0
+const MAX_SPEED: float = 400.0
 # Maximum and Minimum acceleration
 const MAX_ACCEL: float = 7.0
 const MIN_ACCEL: float = -MAX_ACCEL
@@ -17,6 +17,8 @@ var friction: float = 0.6
 var acceleration: float
 # Player tank move direction
 var direction: Vector2
+# Shows if player tank is fallen into see
+var is_fallen_into_see: bool = false
 
 
 
@@ -29,6 +31,10 @@ func _ready() -> void:
 
 
 func _handle_movement(delta: float) -> void:
+	if is_fallen_into_see:
+		move_and_slide(direction * speed)
+		return
+	
 	# Using up, down keys to move the tank
 	var input_accel: float = (Input.get_action_strength("ui_down") - 
 			Input.get_action_strength("ui_up"))
@@ -71,6 +77,13 @@ func _handle_movement(delta: float) -> void:
 			_shot()
 	
 	move_and_slide(direction * speed)
+	
+	# Check if player is fallen into see
+	if (Global.level.grnd_tile.get_cellv(
+			Global.level.grnd_tile.world_to_map(position))
+			== TileMap.INVALID_CELL):
+		is_fallen_into_see = true
+		animations.play("FallIntoSee")
 	
 	return
 	
@@ -117,6 +130,14 @@ func _on_destroy_delay_timeout() -> void:
 	queue_free()
 	
 	get_tree().reload_current_scene()
+	
+	return
+	
+
+
+func _on_Animations_animation_finished(anim_name: String) -> void:
+	if anim_name == "FallIntoSee":
+		destroy_delay.start()
 	
 	return
 	

@@ -29,9 +29,6 @@ flip_h = true
 position = Vector2( -4.56378, 0 )
 shape = SubResource( 1 )
 
-[node name="ShotLockTimer" parent="." index="5"]
-wait_time = 1.5
-
 [node name="NPCVisibilityEnabler" type="VisibilityEnabler2D" parent="." index="6"]
 rect = Rect2( -40, -35, 75, 70 )
 process_parent = true

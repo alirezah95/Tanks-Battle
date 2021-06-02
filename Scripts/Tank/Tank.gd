@@ -1,11 +1,11 @@
 extends KinematicBody2D
 
-onready var destroy_delay = $destroy_delay
+onready var destroy_delay: Timer = $DestroyDelay
 onready var exp_particles: Particles2D = $ExplosionParticle
 onready var barrel: Sprite = $BarrelSprite
 onready var tank: Sprite = $TankSprite
 onready var cool_down_tmr: Timer = $CoolDownTmr
-onready var shot_fire_sprt: Sprite = $BarrelSprite/shot_fire_sprt
+onready var shot_fire_sprt: Sprite = $BarrelSprite/ShotFireSprite
 onready var animations: AnimationPlayer = $Animations
 
 # Player tank move current speed
@@ -19,6 +19,8 @@ export(float) var cool_down_time: float = 0.8
 var is_shot_locked: bool = false
 # Barrel direction
 var shot_direction: Vector2 = Vector2(0, -1)
+# Shows if tank is destroyed (dead)
+var is_dead: bool = false
 
 
 
@@ -60,6 +62,7 @@ func apply_impact(damage: float) -> void:
 
 
 func die() -> void:
+	set_physics_process(false)
 	# Emitting an explosion particle
 	
 	# Making a delay 
@@ -97,7 +100,7 @@ func _instance_shot_object() -> Shot:
 	
 
 
-func _on_destroy_delay_timeout() -> void:
+func _on_DestroyDelay_timeout() -> void:
 	# Explosion particle is finieshed, queueing tank to free.
 	queue_free()
 	
