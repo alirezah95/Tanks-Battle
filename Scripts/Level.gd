@@ -2,6 +2,8 @@ extends Node2D
 
 class_name Level
 
+onready var game_over_scn: PackedScene = (
+	preload("res://Scenes/GameOver.tscn") )
 onready var npc = $NPCs/NPCTank
 onready var items_tile: TileMap = $TileMaps/Items
 onready var grnd_tile: TileMap = $TileMaps/Grounds
@@ -88,6 +90,16 @@ func _ready() -> void:
 		water_rect2.position.x) * 128
 	Global.player.camera.limit_bottom = (water_rect2.size.y + 
 		water_rect2.position.y) * 128
+	
+	return
+	
+
+
+func game_over() -> void:
+	get_tree().paused = true
+	var gm: Control = game_over_scn.instance()
+	
+	add_child(gm)
 	
 	return
 	

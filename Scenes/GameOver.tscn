@@ -1,0 +1,144 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Assets/Fonts/Kenney Future Narrow.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Scripts/GameOver.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0.564706 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 200
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+border_width_left = 10
+border_width_top = 10
+border_color = Color( 0, 0, 0, 1 )
+expand_margin_left = 15.0
+expand_margin_right = 15.0
+expand_margin_top = 5.0
+expand_margin_bottom = 5.0
+shadow_color = Color( 0, 0, 0, 0.219608 )
+shadow_size = 1
+shadow_offset = Vector2( 3, 3 )
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.784314, 0.784314, 0.784314, 1 )
+border_width_left = 10
+border_width_top = 10
+border_color = Color( 0.203922, 0.203922, 0.203922, 1 )
+expand_margin_left = 15.0
+expand_margin_right = 15.0
+expand_margin_top = 5.0
+expand_margin_bottom = 5.0
+shadow_color = Color( 0, 0, 0, 0.219608 )
+shadow_size = 1
+shadow_offset = Vector2( 3, 3 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.141176, 0.141176, 0.141176, 1 )
+border_width_left = 10
+border_width_top = 10
+border_color = Color( 0, 0, 0, 1 )
+expand_margin_left = 15.0
+expand_margin_right = 15.0
+expand_margin_top = 5.0
+expand_margin_bottom = 5.0
+shadow_color = Color( 0, 0, 0, 0.219608 )
+shadow_size = 1
+shadow_offset = Vector2( 3, 3 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 90
+font_data = ExtResource( 1 )
+
+[node name="GameOver" type="Panel"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 1920, 1080 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBox_1" type="VBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 1920, 1080 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="VBox_1"]
+margin_right = 1920.0
+margin_bottom = 200.0
+custom_constants/margin_top = 200
+
+[node name="GameOverLbl" type="Label" parent="VBox_1"]
+margin_top = 204.0
+margin_right = 1920.0
+margin_bottom = 429.0
+custom_fonts/font = SubResource( 2 )
+text = "GAME OVER"
+align = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBox_1"]
+margin_top = 433.0
+margin_right = 1920.0
+margin_bottom = 683.0
+custom_constants/margin_top = 250
+
+[node name="HBox_1" type="HBoxContainer" parent="VBox_1"]
+margin_top = 687.0
+margin_right = 1920.0
+margin_bottom = 799.0
+custom_constants/separation = 300
+alignment = 1
+
+[node name="RestartBttn" type="Button" parent="VBox_1/HBox_1"]
+margin_left = 481.0
+margin_right = 917.0
+margin_bottom = 112.0
+rect_pivot_offset = Vector2( 218, 56 )
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 3 )
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color_disabled = Color( 0.329412, 0.329412, 0.329412, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "restart"
+
+[node name="ExitBttn" type="Button" parent="VBox_1/HBox_1"]
+margin_left = 1217.0
+margin_right = 1438.0
+margin_bottom = 112.0
+rect_pivot_offset = Vector2( 110, 56 )
+focus_mode = 0
+mouse_default_cursor_shape = 2
+custom_styles/hover = SubResource( 3 )
+custom_styles/pressed = SubResource( 4 )
+custom_styles/focus = SubResource( 4 )
+custom_styles/disabled = SubResource( 5 )
+custom_styles/normal = SubResource( 3 )
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color_disabled = Color( 0.329412, 0.329412, 0.329412, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 1 )
+text = "Exit"
+
+[connection signal="button_down" from="VBox_1/HBox_1/RestartBttn" to="VBox_1/HBox_1/RestartBttn" method="set_scale" binds= [ Vector2( 0.9, 0.9 ) ]]
+[connection signal="button_up" from="VBox_1/HBox_1/RestartBttn" to="VBox_1/HBox_1/RestartBttn" method="set_scale" binds= [ Vector2( 1, 1 ) ]]
+[connection signal="pressed" from="VBox_1/HBox_1/RestartBttn" to="." method="_on_ui_bttns_pressed" binds= [ "rest" ]]
+[connection signal="button_down" from="VBox_1/HBox_1/ExitBttn" to="VBox_1/HBox_1/ExitBttn" method="set_scale" binds= [ Vector2( 0.9, 0.9 ) ]]
+[connection signal="button_up" from="VBox_1/HBox_1/ExitBttn" to="VBox_1/HBox_1/ExitBttn" method="set_scale" binds= [ Vector2( 1, 1 ) ]]
+[connection signal="pressed" from="VBox_1/HBox_1/ExitBttn" to="." method="_on_ui_bttns_pressed" binds= [ "exit" ]]

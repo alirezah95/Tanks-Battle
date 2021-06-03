@@ -77,10 +77,6 @@ func _handle_movement(delta: float) -> void:
 	shot_direction = Vector2.ZERO.direction_to(get_local_mouse_position())
 	barrel.rotation = shot_direction.angle()
 	
-	if not is_shot_locked:
-		if Input.is_action_pressed("shot"):
-			_shot()
-	
 	move_and_slide(direction * speed)
 	
 	# Check if player is fallen into see
@@ -89,6 +85,15 @@ func _handle_movement(delta: float) -> void:
 			== TileMap.INVALID_CELL):
 		is_fallen_into_see = true
 		animations.play("FallIntoSee")
+	
+	return
+	
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_LEFT and event.is_pressed():
+			_shot()
 	
 	return
 	
@@ -142,11 +147,10 @@ func apply_impact(damage: float) -> void:
 	
 
 
-func _on_destroy_delay_timeout() -> void:
-	# Explosion particle is finieshed, queueing tank to free.
-	queue_free()
+func _on_DestroyDelay_timeout() -> void:
+	._on_DestroyDelay_timeout()
 	
-	get_tree().reload_current_scene()
+	Global.level.game_over()
 	
 	return
 	

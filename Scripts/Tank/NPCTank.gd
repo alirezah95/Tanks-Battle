@@ -115,14 +115,7 @@ func _handle_movement(delta: float) -> void:
 				else:
 					_update_patrol_direction()
 					npc_current_state = NPCState.PATROLING
-	
-	# Keeping rotation in between -pi and pi, because it's one of the assumption
-	# in some of our functions.
-	if rotation > 3.1415:
-		rotation -= 6.2831
-	elif rotation < -3.1415:
-		rotation += 6.2831
-	
+
 	# Updating states
 	match npc_current_state:
 		NPCState.PATROLING:
@@ -194,6 +187,7 @@ func _handle_movement(delta: float) -> void:
 						npc_current_state = NPCState.PATROLING
 						_update_patrol_direction()
 						return_path.clear()
+						update()
 				
 	
 	return
@@ -265,15 +259,16 @@ func _update_return_path() -> void:
 
 
 func _draw() -> void:
-	if return_path.size() > 0:
-		for i in range(return_path.size() - 1):
-			draw_line(to_local(return_path[i]), to_local(return_path[i + 1]),
-			Color.blue, 6)
-	else:
-		for i in range(path_to_player.size() - 1):
-			draw_line(to_local(path_to_player[i]), to_local(path_to_player[i + 1]),
-				Color.blue, 6)
-
+	match npc_current_state:
+		NPCState.RETURNING:
+			for i in range(return_path.size() - 1):
+				draw_line(to_local(return_path[i]),
+					to_local(return_path[i + 1]), Color.blue, 6)
+		NPCState.CHASING_PLAYER:
+			for i in range(path_to_player.size() - 1):
+				draw_line(to_local(path_to_player[i]),
+					to_local(path_to_player[i + 1]), Color.blue, 6)
+	
 	return
 
 
