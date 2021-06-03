@@ -147,6 +147,7 @@ func apply_impact(damage: float) -> void:
 	
 
 
+
 func _on_DestroyDelay_timeout() -> void:
 	._on_DestroyDelay_timeout()
 	
@@ -154,6 +155,7 @@ func _on_DestroyDelay_timeout() -> void:
 	
 	return
 	
+
 
 
 func _on_Animations_animation_finished(anim_name: String) -> void:
