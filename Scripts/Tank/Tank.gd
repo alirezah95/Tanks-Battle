@@ -14,7 +14,7 @@ export(float) var speed: float = 0
 # should be destroyed.
 export(float) var health: float = 2000.0
 # Sets cool down timer wait_time property
-export(float) var cool_down_time: float = 0.8
+export(float, 0.5, 1.2, 0.1) var cool_down_time: float = 0.8
 # Holds whether the shotting is lockes
 var is_shot_locked: bool = false
 # Barrel direction
@@ -31,6 +31,7 @@ func _ready() -> void:
 	shot_fire_sprt.position = Vector2(
 		barrel.texture.get_size().x / 2, 0) + barrel.offset - Vector2(4, 0)
 	
+	cool_down_tmr.wait_time = cool_down_time
 	return
 	
 
@@ -103,6 +104,8 @@ func _instance_shot_object() -> Shot:
 func _on_DestroyDelay_timeout() -> void:
 	# Explosion particle is finieshed, queueing tank to free.
 	queue_free()
+	
+	Global.level.game_over()
 	
 	return
 	

@@ -49,6 +49,7 @@ tile_data = PoolIntArray( -8847377, 4, 0, -8847376, 5, 0, -8847375, 5, 0, -88473
 
 [node name="PlayerTank" parent="." instance=ExtResource( 1 )]
 position = Vector2( -1997.45, -309.102 )
+cool_down_time = 0.7
 
 [node name="NPCs" type="Node2D" parent="."]
 
