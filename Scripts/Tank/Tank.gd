@@ -105,8 +105,6 @@ func _on_DestroyDelay_timeout() -> void:
 	# Explosion particle is finieshed, queueing tank to free.
 	queue_free()
 	
-	Global.level.game_over()
-	
 	return
 	
 
