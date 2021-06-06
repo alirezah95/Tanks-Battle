@@ -105,23 +105,14 @@ func game_over() -> void:
 	
 
 
-func _process(delta: float) -> void:
-	update()
-	
-	$Control2/HBox/Speed.text = str(Global.player.velocity.length())
-	$Control2/HBox/Accel.text = str(Global.player.accel.length())
-	
-	return
-	
 
-
-func _draw() -> void:
-	var velo: Vector2 = Global.player.position + Global.player.velocity.normalized() * 200
-	draw_line(Global.player.position, velo, Color.red)
-	draw_circle(velo, 10, Color.red)
-	
-	return
-	
+#func _draw() -> void:
+#	var velo: Vector2 = Global.player.position + Global.player.velocity.normalized() * 200
+#	draw_line(Global.player.position, velo, Color.red)
+#	draw_circle(velo, 10, Color.red)
+#
+#	return
+#
 
 
 

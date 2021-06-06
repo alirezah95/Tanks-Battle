@@ -61,6 +61,7 @@ cool_down_time = 0.7
 [node name="NPCs" type="Node2D" parent="."]
 
 [node name="Control2" type="Control" parent="."]
+visible = false
 margin_left = -4345.38
 margin_top = -1806.41
 margin_right = -1465.38

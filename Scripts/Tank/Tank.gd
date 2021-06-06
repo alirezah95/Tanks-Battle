@@ -47,8 +47,6 @@ var curr_traction: float = 0.99
 
 # Holds whether the shotting is lockes
 var is_shot_locked: bool = false
-# Barrel direction
-var shot_direction: Vector2 = Vector2(0, -1)
 # Shows if tank is destroyed (dead)
 var is_dead: bool = false
 
@@ -172,9 +170,7 @@ func _shot() -> void:
 func _instance_shot_object() -> Shot:
 	# Instancing a shot object
 	var new_shot: Shot = Global.shotScn.instance()
-	shot_direction = Vector2(cos(barrel.global_rotation),
-		sin(barrel.global_rotation))
-	new_shot.setDirection(shot_direction)
+	new_shot.setDirection(barrel.global_transform.x)
 	new_shot.global_position = shot_fire_sprt.global_position
 	new_shot.z_index = z_index - 1
 	

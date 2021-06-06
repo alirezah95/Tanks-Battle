@@ -3,7 +3,7 @@ extends "res://Scripts/Tank/Tank.gd"
 class_name PlayerTank
 
 onready var camera: Camera2D = $PlayerCamera
-onready var healthBar: ProgressBar = $Control/HBox/HealthBar
+onready var healthBar: ProgressBar = $UILayer/Control/HBox/HealthBar
 
 # Shows if player tank is fallen into see
 var is_fallen_into_see: bool = false
@@ -55,9 +55,8 @@ func _control(delta: float) -> void:
 	else:
 		curr_steer_ang = lerp_angle(curr_steer_ang, -max_steer_ang, steer_sp)
 	
-	# Using mouse cursor position the tank barrel direction is set.
-	shot_direction = Vector2.ZERO.direction_to(get_local_mouse_position())
-	barrel.rotation = shot_direction.angle()
+	# Using mouse cursor position the tank barrel rotation is set.
+	barrel.rotation = get_local_mouse_position().angle()
 	
 	# Check if player is fallen into see
 	if (Global.level.grnd_tile.get_cellv(
@@ -76,17 +75,6 @@ func _unhandled_input(event: InputEvent) -> void:
 			_shot()
 	
 	return
-	
-
-
-func _instance_shot_object() -> Shot:
-	# Instancing a shot object
-	var new_shot: Shot = Global.playerShotScn.instance()
-	new_shot.setDirection(shot_direction)
-	new_shot.global_position = shot_fire_sprt.global_position
-	new_shot.z_index = z_index - 1
-	
-	return new_shot
 	
 
 

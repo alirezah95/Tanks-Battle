@@ -36,7 +36,7 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 0, 0, 0.768627, 0.352941 ), Color( 0, 0, 0.768627, 0 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Control:visible")
+tracks/2/path = NodePath("UILayer/Control:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -50,12 +50,28 @@ tracks/2/keys = {
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 1, 1, 1, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 1, 1, 1, 0 )
+border_blend = true
+corner_radius_top_left = 19
+corner_radius_top_right = 19
+corner_radius_bottom_right = 19
+corner_radius_bottom_left = 19
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0, 0, 0, 0 )
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color( 0, 0.0745098, 0.564706, 1 )
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
-
-[sub_resource type="StyleBoxEmpty" id=4]
 
 [node name="PlayerTank" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -74,45 +90,47 @@ shape = SubResource( 1 )
 [node name="PlayerCamera" type="Camera2D" parent="." index="6"]
 current = true
 zoom = Vector2( 1.5, 1.5 )
+smoothing_enabled = true
 
 [node name="Animations" parent="." index="7"]
 anims/FallIntoSee = SubResource( 2 )
 
-[node name="Control" type="Control" parent="." index="8"]
-margin_left = -1440.0
-margin_top = -810.0
-margin_right = 1440.0
-margin_bottom = 810.0
+[node name="TankFront" parent="." index="8"]
+position = Vector2( 33.0855, 0 )
+
+[node name="TankBack" parent="." index="9"]
+position = Vector2( -34.3383, 0 )
+
+[node name="UILayer" type="CanvasLayer" parent="." index="10"]
+
+[node name="Control" type="Control" parent="UILayer" index="0"]
+margin_right = 2880.0
+margin_bottom = 1620.0
 rect_min_size = Vector2( 2880, 1620 )
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBox" type="HBoxContainer" parent="Control" index="0"]
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="HBox" type="HBoxContainer" parent="UILayer/Control" index="0"]
+margin_left = 15.0
+margin_top = 15.0
+margin_right = 370.0
+margin_bottom = 60.0
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HealthBar" type="ProgressBar" parent="Control/HBox" index="0"]
+[node name="HealthBar" type="ProgressBar" parent="UILayer/Control/HBox" index="0"]
 modulate = Color( 0.0156863, 0.552941, 0.164706, 1 )
-margin_right = 600.0
-margin_bottom = 75.0
-rect_min_size = Vector2( 600, 75 )
+margin_right = 350.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 350, 40 )
 custom_styles/fg = SubResource( 3 )
 custom_styles/bg = SubResource( 4 )
+value = 100.0
 rounded = true
 percent_visible = false
-
-[node name="TankFront" parent="." index="9"]
-position = Vector2( 33.0855, 0 )
-
-[node name="TankBack" parent="." index="10"]
-position = Vector2( -34.3383, 0 )
 
 [connection signal="animation_finished" from="Animations" to="." method="_on_Animations_animation_finished"]
