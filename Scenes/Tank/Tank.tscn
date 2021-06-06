@@ -50,5 +50,9 @@ one_shot = true
 [node name="Animations" type="AnimationPlayer" parent="."]
 anims/ShotFire = SubResource( 1 )
 
+[node name="TankFront" type="Position2D" parent="."]
+
+[node name="TankBack" type="Position2D" parent="."]
+
 [connection signal="timeout" from="DestroyDelay" to="." method="_on_DestroyDelay_timeout"]
 [connection signal="timeout" from="CoolDownTmr" to="." method="_on_ShotLockTimer_timeout"]

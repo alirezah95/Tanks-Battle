@@ -64,7 +64,6 @@ var move_direction: Vector2 = Vector2(1, 0)
 
 
 func _ready() -> void:
-	speed = 150
 	patrol_points.resize(4)
 	randomize()
 	var increasing_angle: int = randi() & 0x1
@@ -86,7 +85,7 @@ func _ready() -> void:
 	
 
 
-func _handle_movement(delta: float) -> void:
+func _control(delta: float) -> void:
 	# Regardless of npc state we need distance to player
 	var player_dist_squared: float = (
 		(position - Global.player.position).length_squared())

@@ -6,7 +6,7 @@
 [ext_resource path="res://Assets/Gfx/tankBlue_barrel2_outline.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 27.1206, 30.9572 )
+extents = Vector2( 32.0616, 30.9572 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "FallIntoSee"
@@ -68,7 +68,7 @@ texture = ExtResource( 4 )
 offset = Vector2( 30, 0 )
 
 [node name="TankCollision" parent="." index="2"]
-position = Vector2( -3, 0 )
+visible = true
 shape = SubResource( 1 )
 
 [node name="PlayerCamera" type="Camera2D" parent="." index="6"]
@@ -108,5 +108,11 @@ custom_styles/fg = SubResource( 3 )
 custom_styles/bg = SubResource( 4 )
 rounded = true
 percent_visible = false
+
+[node name="TankFront" parent="." index="9"]
+position = Vector2( 33.0855, 0 )
+
+[node name="TankBack" parent="." index="10"]
+position = Vector2( -34.3383, 0 )
 
 [connection signal="animation_finished" from="Animations" to="." method="_on_Animations_animation_finished"]

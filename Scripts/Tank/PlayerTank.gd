@@ -5,19 +5,6 @@ class_name PlayerTank
 onready var camera: Camera2D = $PlayerCamera
 onready var healthBar: ProgressBar = $Control/HBox/HealthBar
 
-# Max speed value, tank speed cant go higher than this value
-const MAX_SPEED: float = 400.0
-# Maximum and Minimum acceleration
-const MAX_ACCEL: float = 7.0
-const MIN_ACCEL: float = -MAX_ACCEL
-# Breaks force
-const BREAKS_FORCE: float = 7.0
-# Tank friction value
-var friction: float = 0.6
-# Forward acceleration value
-var acceleration: float
-# Player tank move direction
-var direction: Vector2
 # Shows if player tank is fallen into see
 var is_fallen_into_see: bool = false
 
@@ -35,49 +22,42 @@ func _ready() -> void:
 	
 
 
-func _handle_movement(delta: float) -> void:
+func _control(delta: float) -> void:
 	if is_fallen_into_see:
-		move_and_slide(direction * speed)
 		return
 	
 	# Using up, down keys to move the tank
-	var input_accel: float = (Input.get_action_strength("ui_down") - 
-			Input.get_action_strength("ui_up"))
-	var turnStr: float = (Input.get_action_strength("ui_right") -
-			Input.get_action_strength("ui_left"))
+	var input_accel: float = (Input.get_action_strength("ui_up") - 
+		Input.get_action_strength("ui_down"))
+	
+	var input_steer: float = (Input.get_action_strength("ui_right") -
+		Input.get_action_strength("ui_left"))
 	
 	var breaks_pressed: bool = Input.is_action_pressed("break")
 	
-	if input_accel == 0.0:
-		acceleration = 0
-	else:
-		acceleration += input_accel
-		if acceleration > MAX_ACCEL:
-			acceleration = MAX_ACCEL
-		elif acceleration < MIN_ACCEL:
-			acceleration = MIN_ACCEL
-	
-	# Applying forward acceleration to speed
-	speed += acceleration
-	_apply_friction()
 	if breaks_pressed:
-		_apply_breaks()
-	
-	# Apply turn
-	if speed < 5.0 && speed > -5.0:
-		tank.rotation += turnStr * delta * 0.8
+		curr_accel_magn = -50
+	elif input_accel == 1:
+		curr_accel_magn = lerp(curr_accel_magn, max_accel, engine_de_accel)
+		accel = transform.x * curr_accel_magn
+	elif input_accel == -1:
+		curr_accel_magn = lerp(curr_accel_magn, reverse_accel, engine_de_accel)
+		accel = transform.x * reverse_accel
 	else:
-		tank.rotation += turnStr * delta * 1.6
+		# Just decrease current accel_magn value, friction will decrease accel_magn vector
+		# length
+		curr_accel_magn = lerp(curr_accel_magn, 0, 0.01)
 	
-	speed = clamp(speed, -MAX_SPEED, MAX_SPEED)
-	
-	direction = Vector2(-cos(tank.rotation), -sin(tank.rotation))
+	if input_steer == 0:
+		curr_steer_ang = lerp_angle(curr_steer_ang, 0.0, 0.1)
+	elif input_steer == 1:
+		curr_steer_ang = lerp_angle(curr_steer_ang, max_steer_ang, steer_sp)
+	else:
+		curr_steer_ang = lerp_angle(curr_steer_ang, -max_steer_ang, steer_sp)
 	
 	# Using mouse cursor position the tank barrel direction is set.
 	shot_direction = Vector2.ZERO.direction_to(get_local_mouse_position())
 	barrel.rotation = shot_direction.angle()
-	
-	move_and_slide(direction * speed)
 	
 	# Check if player is fallen into see
 	if (Global.level.grnd_tile.get_cellv(
@@ -110,31 +90,6 @@ func _instance_shot_object() -> Shot:
 	
 
 
-func _apply_friction() -> void:
-	if speed < -5:
-		speed += friction
-	elif speed > 5:
-		speed -= friction
-	elif acceleration == 0:
-		speed = 0
-		
-	return
-	
-
-
-func _apply_breaks() -> void:
-	# Apply breaks
-	if speed < -5:
-		speed += BREAKS_FORCE
-	elif speed > 5:
-		speed -= BREAKS_FORCE
-	else:
-		speed = 0.0
-	
-	return
-	
-
-
 func apply_impact(damage: float) -> void:
 	.apply_impact(damage)
 	
@@ -164,3 +119,4 @@ func _on_Animations_animation_finished(anim_name: String) -> void:
 	
 	return
 	
+

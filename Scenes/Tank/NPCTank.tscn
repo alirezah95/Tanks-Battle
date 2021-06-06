@@ -12,6 +12,10 @@ extents = Vector2( 43.9256, 42.885 )
 collision_layer = 2
 collision_mask = 15
 script = ExtResource( 2 )
+max_accel = 1200.0
+drag = -0.001
+max_steer_ang = 0.025
+steer_sp = 0.4
 
 [node name="TankSprite" parent="." index="0"]
 texture = ExtResource( 3 )
