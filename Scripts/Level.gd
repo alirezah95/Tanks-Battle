@@ -4,7 +4,7 @@ class_name Level
 
 onready var game_over_scn: PackedScene = (
 	preload("res://Scenes/GameOver.tscn") )
-#onready var npc = $NPCs/NPCTank
+onready var npc = $NPCs/NPCTank
 onready var items_tile: TileMap = $TileMaps/Items
 onready var grnd_tile: TileMap = $TileMaps/Grounds
 
@@ -84,12 +84,12 @@ func _ready() -> void:
 #	print("A* node size is:  ", astar.get_point_count())
 	# Setting player camera limits
 	var water_rect2: Rect2 = $TileMaps/Water.get_used_rect()
-	Global.player.camera.limit_left = water_rect2.position.x * 128
-	Global.player.camera.limit_top = water_rect2.position.y * 128
-	Global.player.camera.limit_right = (water_rect2.size.x + 
-		water_rect2.position.x) * 128
-	Global.player.camera.limit_bottom = (water_rect2.size.y + 
-		water_rect2.position.y) * 128
+#	Global.player.camera.limit_left = water_rect2.position.x * 128
+#	Global.player.camera.limit_top = water_rect2.position.y * 128
+#	Global.player.camera.limit_right = (water_rect2.size.x + 
+#		water_rect2.position.x) * 128
+#	Global.player.camera.limit_bottom = (water_rect2.size.y + 
+#		water_rect2.position.y) * 128
 	
 	return
 	
@@ -124,6 +124,22 @@ func game_over() -> void:
 #
 #	return
 
+
+func _draw() -> void:
+	if not is_instance_valid(npc):
+		return
+	
+	var velo: Vector2 = npc.position + npc.velocity.normalized() * 200
+	draw_line(npc.position, velo, Color.red, 5)
+	draw_circle(velo, 10, Color.red)
+	
+	return
+	
+
+
+func _process(delta: float) -> void:
+	update()
+	
 
 
 #func _draw() -> void:

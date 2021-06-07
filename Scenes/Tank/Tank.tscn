@@ -1,10 +1,37 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/Tank/Tank.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Gfx/shotRed.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Gfx/Particles/fire_01.png" type="Texture" id=3]
 
-[sub_resource type="Animation" id=1]
-resource_name = "ShotFire"
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0.452489, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 0.45098, 0.45098, 0.45098, 0.603922 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.764706 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=5]
+resource_local_to_scene = true
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 90.0
+angle_random = 1.0
+scale = 3.0
+scale_curve = SubResource( 4 )
+color_ramp = SubResource( 2 )
+hue_variation = 0.25
+hue_variation_random = 0.25
+
+[sub_resource type="Animation" id=6]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("BarrelSprite/ShotFireSprite:modulate")
@@ -16,7 +43,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.5 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 0.447059, 0, 1 ), Color( 1, 0.447059, 0, 0 ) ]
 }
 
 [node name="Tank" type="KinematicBody2D"]
@@ -30,17 +57,20 @@ script = ExtResource( 1 )
 modulate = Color( 1, 1, 1, 0 )
 show_behind_parent = true
 scale = Vector2( 0.8, 0.8 )
-texture = ExtResource( 2 )
 
 [node name="TankCollision" type="CollisionShape2D" parent="."]
 visible = false
 
-[node name="ExplosionParticle" type="Particles2D" parent="."]
-visible = false
+[node name="ExplosionParticles" type="Particles2D" parent="."]
 emitting = false
+lifetime = 1.2
+one_shot = true
+speed_scale = 1.2
+process_material = SubResource( 5 )
+texture = ExtResource( 3 )
 
 [node name="DestroyDelay" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 1.5
 one_shot = true
 
 [node name="CoolDownTmr" type="Timer" parent="."]
@@ -48,7 +78,7 @@ wait_time = 0.8
 one_shot = true
 
 [node name="Animations" type="AnimationPlayer" parent="."]
-anims/ShotFire = SubResource( 1 )
+anims/ShotFire = SubResource( 6 )
 
 [node name="TankFront" type="Position2D" parent="."]
 

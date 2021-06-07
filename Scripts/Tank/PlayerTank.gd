@@ -3,7 +3,7 @@ extends "res://Scripts/Tank/Tank.gd"
 class_name PlayerTank
 
 onready var camera: Camera2D = $PlayerCamera
-onready var healthBar: ProgressBar = $UILayer/Control/HBox/HealthBar
+onready var health_bar: TextureProgress = $UILayer/Control/Health
 
 # Shows if player tank is fallen into see
 var is_fallen_into_see: bool = false
@@ -14,9 +14,9 @@ func _ready() -> void:
 	Global.player = self
 	health = 10000
 	
-	healthBar.min_value = 0
-	healthBar.max_value = health
-	healthBar.value = health
+	health_bar.min_value = 0
+	health_bar.max_value = health
+	health_bar.value = health
 	
 	return
 	
@@ -36,17 +36,18 @@ func _control(delta: float) -> void:
 	var breaks_pressed: bool = Input.is_action_pressed("break")
 	
 	if breaks_pressed:
-		curr_accel_magn = -50
+		curr_accel_magn = 0
+		accel = transform.x * break_de_accel
 	elif input_accel == 1:
-		curr_accel_magn = lerp(curr_accel_magn, max_accel, engine_de_accel)
+		curr_accel_magn = lerp(curr_accel_magn, max_accel, engine_accel)
 		accel = transform.x * curr_accel_magn
 	elif input_accel == -1:
-		curr_accel_magn = lerp(curr_accel_magn, reverse_accel, engine_de_accel)
-		accel = transform.x * reverse_accel
+		curr_accel_magn = lerp(curr_accel_magn, reverse_accel, 0.1)
+		accel = transform.x * curr_accel_magn
 	else:
 		# Just decrease current accel_magn value, friction will decrease accel_magn vector
 		# length
-		curr_accel_magn = lerp(curr_accel_magn, 0, 0.01)
+		curr_accel_magn = lerp(curr_accel_magn, 0, 0.1)
 	
 	if input_steer == 0:
 		curr_steer_ang = lerp_angle(curr_steer_ang, 0.0, 0.1)
@@ -56,7 +57,7 @@ func _control(delta: float) -> void:
 		curr_steer_ang = lerp_angle(curr_steer_ang, -max_steer_ang, steer_sp)
 	
 	# Using mouse cursor position the tank barrel rotation is set.
-	barrel.rotation = get_local_mouse_position().angle()
+	barrel_sprt.rotation = get_local_mouse_position().angle()
 	
 	# Check if player is fallen into see
 	if (Global.level.grnd_tile.get_cellv(
@@ -65,8 +66,21 @@ func _control(delta: float) -> void:
 		is_fallen_into_see = true
 		animations.play("FallIntoSee")
 	
+	
 	return
 	
+
+
+func _instance_shot_object() -> Shot:
+	# Instancing a shot object
+	var new_shot: Shot = Global.player_shot_scn.instance()
+	new_shot.setDirection(barrel_sprt.global_transform.x)
+	new_shot.global_position = shot_fire_sprt.global_position
+	new_shot.z_index = z_index - 1
+	
+	return new_shot
+	
+
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -81,10 +95,10 @@ func _unhandled_input(event: InputEvent) -> void:
 func apply_impact(damage: float) -> void:
 	.apply_impact(damage)
 	
-	healthBar.value = health
+	health_bar.value = health
 	
-	if healthBar.value <= 3000:
-		healthBar.modulate = Color("cf0000")
+	if health_bar.value <= 3000:
+		health_bar.tint_progress = Color("cf0000")
 	
 	return
 	

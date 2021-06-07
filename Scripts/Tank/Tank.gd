@@ -1,9 +1,10 @@
 extends KinematicBody2D
 
 onready var destroy_delay: Timer = $DestroyDelay
-onready var exp_particles: Particles2D = $ExplosionParticle
-onready var barrel: Sprite = $BarrelSprite
-onready var tank: Sprite = $TankSprite
+onready var tank_collision: CollisionShape2D = $TankCollision
+onready var explosion_part: Particles2D = $ExplosionParticles
+onready var barrel_sprt: Sprite = $BarrelSprite
+onready var tank_sprt: Sprite = $TankSprite
 onready var cool_down_tmr: Timer = $CoolDownTmr
 onready var shot_fire_sprt: Sprite = $BarrelSprite/ShotFireSprite
 onready var animations: AnimationPlayer = $Animations
@@ -17,11 +18,13 @@ export(float) var health: float = 2000.0
 export(float, 0.5, 1.2, 0.1) var cool_down_time: float = 0.8
 
 # Maximum available accelaration (maximum engine force)
-export(float) var max_accel: float = 1000
+export(float) var max_accel: float = 800
 # Reverse accelaration value
-export(float) var reverse_accel: float = -450
+export(float) var reverse_accel: float = -350
+# Break deacceleration
+export(float) var break_de_accel: float = -200
 # Engine deaccelaration ratio
-export(float, 0.2, 0.3, 0.02) var engine_de_accel: float = 0.25
+export(float, 0.2, 0.3, 0.02) var engine_accel: float = 0.1
 # Friction constant
 export(float, -0.2, -0.5, 0.1) var friction: float = -0.3
 # Holds drag constant, which is caused by air resistance.
@@ -44,7 +47,6 @@ var speed: float = 0.0
 var curr_steer_ang: float = 0.0
 # Traction
 var curr_traction: float = 0.99
-
 # Holds whether the shotting is lockes
 var is_shot_locked: bool = false
 # Shows if tank is destroyed (dead)
@@ -56,10 +58,12 @@ func _ready() -> void:
 	add_to_group("tank")
 	shot_fire_sprt.modulate = Color.transparent
 	shot_fire_sprt.offset = Vector2(shot_fire_sprt.texture.get_size().x / 2, 0)
-	shot_fire_sprt.position = Vector2(
-		barrel.texture.get_size().x / 2, 0) + barrel.offset - Vector2(4, 0)
+	shot_fire_sprt.position = (Vector2(barrel_sprt.texture.get_size().x / 2, 0)
+		+ barrel_sprt.offset - Vector2(4, 0))
 	
 	cool_down_tmr.wait_time = cool_down_time
+	
+	_on_ready()
 	return
 	
 
@@ -94,8 +98,9 @@ func _control(delta: float) -> void:
 # It is the same of all derived classes
 func _handle_friction(delta: float) -> void:
 	# Stop if it's already slow
-	if speed < 5:
-		velocity = Vector2()
+	if speed < 10 and abs(curr_accel_magn) < 1:
+		velocity = Vector2(0, 0)
+		speed = 0
 		return
 	
 	var roll_resis: Vector2 = velocity * friction
@@ -106,6 +111,7 @@ func _handle_friction(delta: float) -> void:
 	return
 	
 
+
 # This function handles car steering.
 func _handle_steering(delta: float) -> void:
 	var rear_wheel = tank_back.global_position + velocity * delta
@@ -115,7 +121,11 @@ func _handle_steering(delta: float) -> void:
 	rotation = new_heading.angle()
 	
 	var target_vel = new_heading * speed
-	velocity = velocity.linear_interpolate(target_vel, curr_traction)
+	var is_moving_forward: bool = true if new_heading.dot(velocity) > 0 else false
+	if is_moving_forward:
+		velocity = velocity.linear_interpolate(target_vel, curr_traction)
+	else:
+		velocity = -target_vel
 	
 	return
 	
@@ -143,8 +153,10 @@ func apply_impact(damage: float) -> void:
 
 func die() -> void:
 	set_physics_process(false)
-	# Emitting an explosion particle
+	tank_collision.disabled = true
 	
+	# Emitting an explosion particle
+	explosion_part.emitting = true
 	# Making a delay 
 	destroy_delay.start()
 	
@@ -169,8 +181,8 @@ func _shot() -> void:
 
 func _instance_shot_object() -> Shot:
 	# Instancing a shot object
-	var new_shot: Shot = Global.shotScn.instance()
-	new_shot.setDirection(barrel.global_transform.x)
+	var new_shot: Shot = Global.shot_scn.instance()
+	new_shot.setDirection(barrel_sprt.global_transform.x)
 	new_shot.global_position = shot_fire_sprt.global_position
 	new_shot.z_index = z_index - 1
 	

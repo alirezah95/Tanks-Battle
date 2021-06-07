@@ -1,21 +1,60 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Scenes/Tank/Tank.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Tank/NPCTank.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Gfx/tankBody_huge.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Gfx/tankDark_barrel3_outline.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Fonts/ComicNeue-Bold.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://Assets/Gfx/Particles/muzzle_04.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 43.9256, 42.885 )
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0.452489, 1 )
+colors = PoolColorArray( 1, 1, 1, 1, 0.45098, 0.45098, 0.45098, 0.603922 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.764706 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=6]
+resource_local_to_scene = true
+flag_disable_z = true
+gravity = Vector3( 0, 0, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 90.0
+angle_random = 1.0
+scale = 3.0
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 3 )
+hue_variation = 0.25
+hue_variation_random = 0.25
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.14902, 0.14902, 0.14902, 1 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 60
+font_data = ExtResource( 5 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.14902, 0.14902, 0.14902, 1 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 60
+font_data = ExtResource( 5 )
 
 [node name="NPCTank" instance=ExtResource( 1 )]
 collision_layer = 2
 collision_mask = 15
 script = ExtResource( 2 )
-max_accel = 1200.0
-drag = -0.001
-max_steer_ang = 0.025
-steer_sp = 0.4
 
 [node name="TankSprite" parent="." index="0"]
 texture = ExtResource( 3 )
@@ -29,11 +68,91 @@ texture = ExtResource( 4 )
 offset = Vector2( 30, 0 )
 flip_h = true
 
+[node name="ShotFireSprite" parent="BarrelSprite" index="0"]
+texture = ExtResource( 6 )
+
 [node name="TankCollision" parent="." index="2"]
 position = Vector2( -4.56378, 0 )
 shape = SubResource( 1 )
 
+[node name="ExplosionParticles" parent="." index="3"]
+process_material = SubResource( 6 )
+
 [node name="NPCVisibilityEnabler" type="VisibilityEnabler2D" parent="." index="6"]
 rect = Rect2( -40, -35, 75, 70 )
+pause_particles = false
+pause_animated_sprites = false
 process_parent = true
 physics_process_parent = true
+
+[node name="TankFront" parent="." index="8"]
+position = Vector2( 41.4709, 0 )
+
+[node name="TankBack" parent="." index="9"]
+position = Vector2( -49.6063, 0 )
+
+[node name="UILayer" type="CanvasLayer" parent="." index="10"]
+scale = Vector2( 0.8, 0.8 )
+transform = Transform2D( 0.8, 0, 0, 0.8, 0, 0 )
+
+[node name="Control" type="Control" parent="UILayer" index="0"]
+visible = false
+margin_right = 2880.0
+margin_bottom = 1620.0
+rect_min_size = Vector2( 2880, 1620 )
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBox" type="HBoxContainer" parent="UILayer/Control" index="0"]
+margin_left = 15.0
+margin_top = 15.0
+margin_right = 370.0
+margin_bottom = 60.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpeedX" type="Label" parent="UILayer/Control/HBox" index="0"]
+margin_right = 350.0
+margin_bottom = 69.0
+rect_min_size = Vector2( 350, 0 )
+custom_styles/normal = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
+
+[node name="SpeedY" type="Label" parent="UILayer/Control/HBox" index="1"]
+margin_left = 354.0
+margin_right = 704.0
+margin_bottom = 69.0
+rect_min_size = Vector2( 350, 0 )
+custom_styles/normal = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
+
+[node name="AccelX" type="Label" parent="UILayer/Control/HBox" index="2"]
+margin_left = 708.0
+margin_right = 1058.0
+margin_bottom = 69.0
+rect_min_size = Vector2( 350, 0 )
+custom_styles/normal = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
+
+[node name="AccelY" type="Label" parent="UILayer/Control/HBox" index="3"]
+margin_left = 1062.0
+margin_right = 1412.0
+margin_bottom = 69.0
+rect_min_size = Vector2( 350, 0 )
+custom_styles/normal = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
+
+[node name="Label" type="Label" parent="UILayer/Control/HBox" index="4"]
+margin_left = 1416.0
+margin_right = 1766.0
+margin_bottom = 69.0
+rect_min_size = Vector2( 350, 0 )
+custom_styles/normal = SubResource( 9 )
+custom_fonts/font = SubResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

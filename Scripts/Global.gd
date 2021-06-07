@@ -1,8 +1,8 @@
 extends Node
 
 
-onready var shotScn: PackedScene = preload("res://Scenes/Shot/Shot.tscn")
-onready var playerShotScn: PackedScene = (
+onready var shot_scn: PackedScene = preload("res://Scenes/Shot/Shot.tscn")
+onready var player_shot_scn: PackedScene = (
 	preload("res://Scenes/Shot/PlayerShot.tscn"))
 
 
