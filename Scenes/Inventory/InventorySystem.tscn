@@ -1,0 +1,461 @@
+[gd_scene load_steps=32 format=2]
+
+[ext_resource path="res://Assets/Fonts/Kenney Future Narrow.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/Gfx/Inventory_system/bg_white_gray.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/Inventory/InventorySystem.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Tres/KennyNarrow_50.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Assets/Fonts/B612Mono-Regular.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://Scenes/Inventory/InventoryTank.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/Gfx/Inventory_system/arrow_left.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Gfx/Inventory_system/arrow_right.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Fonts/B612Mono-Bold.ttf" type="DynamicFontData" id=9]
+[ext_resource path="res://Assets/Fonts/ComicNeue-Bold.ttf" type="DynamicFontData" id=10]
+
+[sub_resource type="StyleBoxTexture" id=1]
+texture = ExtResource( 2 )
+region_rect = Rect2( 0, 0, 1920, 1280 )
+margin_left = 160.0
+margin_right = 160.0
+margin_top = 55.0
+margin_bottom = 90.0
+modulate_color = Color( 0.207843, 0.207843, 0.207843, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_left = 70.0
+content_margin_right = 70.0
+bg_color = Color( 0.141176, 0.160784, 0.203922, 1 )
+border_width_left = 15
+border_width_top = 15
+border_width_right = 15
+border_width_bottom = 15
+border_color = Color( 0.301961, 0.494118, 0.596078, 1 )
+border_blend = true
+corner_radius_top_left = 60
+corner_radius_top_right = 60
+corner_radius_bottom_right = 60
+corner_radius_bottom_left = 60
+
+[sub_resource type="StyleBoxFlat" id=24]
+bg_color = Color( 0.201, 0.513667, 0.67, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id=26]
+bg_color = Color( 0.341176, 0.341176, 0.341176, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="DynamicFont" id=23]
+size = 30
+use_filter = true
+extra_spacing_top = 5
+font_data = ExtResource( 10 )
+
+[sub_resource type="StyleBoxFlat" id=25]
+bg_color = Color( 0.811765, 0.00784314, 0.00784314, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id=27]
+bg_color = Color( 0.345098, 0.345098, 0.345098, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id=9]
+content_margin_left = 10.0
+content_margin_right = 10.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color( 0.141176, 0.168627, 0.231373, 0.823529 )
+border_width_left = 20
+border_width_top = 20
+border_width_right = 20
+border_width_bottom = 20
+border_color = Color( 0.313726, 0.521569, 0.631373, 1 )
+border_blend = true
+corner_radius_top_left = 60
+corner_radius_top_right = 60
+corner_radius_bottom_right = 60
+corner_radius_bottom_left = 60
+expand_margin_left = 20.0
+expand_margin_right = 20.0
+expand_margin_top = 20.0
+expand_margin_bottom = 20.0
+
+[sub_resource type="StyleBoxFlat" id=10]
+content_margin_left = 25.0
+content_margin_right = 25.0
+content_margin_top = 20.0
+content_margin_bottom = 20.0
+bg_color = Color( 0.1872, 0.40352, 0.52, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 1, 1, 1, 1 )
+border_blend = true
+corner_radius_top_left = 60
+corner_radius_top_right = 60
+corner_radius_bottom_right = 60
+corner_radius_bottom_left = 60
+
+[sub_resource type="StyleBoxFlat" id=11]
+content_margin_left = 25.0
+content_margin_right = 25.0
+content_margin_top = 20.0
+content_margin_bottom = 20.0
+bg_color = Color( 0.1044, 0.22504, 0.29, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0.6, 0.6, 0.6, 1 )
+border_blend = true
+corner_radius_top_left = 60
+corner_radius_top_right = 60
+corner_radius_bottom_right = 60
+corner_radius_bottom_left = 60
+
+[sub_resource type="StyleBoxFlat" id=12]
+content_margin_left = 45.0
+content_margin_right = 45.0
+content_margin_top = 30.0
+content_margin_bottom = 35.0
+bg_color = Color( 0.141176, 0.168627, 0.231373, 0.392157 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0.315, 0.51975, 0.63, 1 )
+border_blend = true
+corner_radius_top_left = 60
+corner_radius_top_right = 60
+corner_radius_bottom_right = 60
+corner_radius_bottom_left = 60
+expand_margin_top = 30.0
+
+[sub_resource type="DynamicFont" id=13]
+size = 25
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="StyleBoxEmpty" id=14]
+
+[sub_resource type="StyleBoxEmpty" id=15]
+
+[sub_resource type="StyleBoxEmpty" id=16]
+
+[sub_resource type="StyleBoxEmpty" id=17]
+
+[sub_resource type="StyleBoxEmpty" id=18]
+
+[sub_resource type="Theme" id=19]
+HScrollBar/icons/decrement = null
+HScrollBar/icons/decrement_highlight = null
+HScrollBar/icons/increment = null
+HScrollBar/icons/increment_highlight = null
+HScrollBar/styles/grabber = SubResource( 14 )
+HScrollBar/styles/grabber_highlight = SubResource( 15 )
+HScrollBar/styles/grabber_pressed = SubResource( 16 )
+HScrollBar/styles/scroll = SubResource( 17 )
+HScrollBar/styles/scroll_focus = SubResource( 18 )
+
+[sub_resource type="StyleBoxFlat" id=20]
+content_margin_left = 20.0
+content_margin_right = 20.0
+content_margin_top = 90.0
+bg_color = Color( 0.141176, 0.168627, 0.231373, 0.392157 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0.315, 0.51975, 0.63, 1 )
+border_blend = true
+corner_radius_top_left = 60
+corner_radius_top_right = 60
+corner_radius_bottom_right = 60
+corner_radius_bottom_left = 60
+
+[sub_resource type="DynamicFont" id=21]
+size = 42
+font_data = ExtResource( 9 )
+
+[sub_resource type="DynamicFont" id=22]
+font_data = ExtResource( 5 )
+
+[node name="InventorySystem" type="PanelContainer"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+rect_min_size = Vector2( 1920, 1080 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InventoryVBox" type="VBoxContainer" parent="."]
+margin_left = 160.0
+margin_top = 55.0
+margin_right = 1760.0
+margin_bottom = 990.0
+custom_constants/separation = -45
+
+[node name="LabelHBox" type="HBoxContainer" parent="InventoryVBox"]
+margin_right = 1600.0
+margin_bottom = 100.0
+custom_constants/separation = 24
+
+[node name="Margin" type="MarginContainer" parent="InventoryVBox/LabelHBox"]
+margin_right = 15.0
+margin_bottom = 100.0
+custom_constants/margin_right = 15
+
+[node name="InvenLabel" type="Label" parent="InventoryVBox/LabelHBox"]
+margin_left = 39.0
+margin_right = 471.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 0, 100 )
+custom_styles/normal = SubResource( 2 )
+custom_fonts/font = ExtResource( 4 )
+text = "Inventory"
+align = 1
+valign = 1
+
+[node name="Margin2" type="MarginContainer" parent="InventoryVBox/LabelHBox"]
+margin_left = 495.0
+margin_right = 1313.0
+margin_bottom = 100.0
+size_flags_horizontal = 3
+custom_constants/margin_right = 33
+
+[node name="SaveBttn" type="Button" parent="InventoryVBox/LabelHBox"]
+margin_left = 1337.0
+margin_right = 1437.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+rect_pivot_offset = Vector2( 52, 52 )
+custom_styles/hover = SubResource( 24 )
+custom_styles/pressed = SubResource( 24 )
+custom_styles/focus = SubResource( 24 )
+custom_styles/disabled = SubResource( 26 )
+custom_styles/normal = SubResource( 24 )
+custom_fonts/font = SubResource( 23 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Save"
+
+[node name="CloseBttn" type="Button" parent="InventoryVBox/LabelHBox"]
+margin_left = 1461.0
+margin_right = 1561.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+rect_pivot_offset = Vector2( 52, 52 )
+custom_styles/hover = SubResource( 25 )
+custom_styles/pressed = SubResource( 25 )
+custom_styles/focus = SubResource( 25 )
+custom_styles/disabled = SubResource( 27 )
+custom_styles/normal = SubResource( 25 )
+custom_fonts/font = SubResource( 23 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Cancel"
+
+[node name="Margin3" type="MarginContainer" parent="InventoryVBox/LabelHBox"]
+margin_left = 1585.0
+margin_right = 1600.0
+margin_bottom = 100.0
+custom_constants/margin_right = 15
+
+[node name="MainPanel" type="PanelContainer" parent="InventoryVBox"]
+show_behind_parent = true
+margin_top = 55.0
+margin_right = 1600.0
+margin_bottom = 935.0
+mouse_filter = 2
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 9 )
+
+[node name="MainVBox" type="VBoxContainer" parent="InventoryVBox/MainPanel"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 1590.0
+margin_bottom = 870.0
+mouse_filter = 2
+
+[node name="Margin_0" type="MarginContainer" parent="InventoryVBox/MainPanel/MainVBox"]
+margin_right = 1580.0
+margin_bottom = 100.0
+mouse_filter = 2
+custom_constants/margin_bottom = 100
+
+[node name="HBox_2" type="HBoxContainer" parent="InventoryVBox/MainPanel/MainVBox"]
+margin_top = 104.0
+margin_right = 1580.0
+margin_bottom = 860.0
+size_flags_vertical = 3
+custom_constants/separation = 10
+
+[node name="ItemsCenter" type="TabContainer" parent="InventoryVBox/MainPanel/MainVBox/HBox_2"]
+margin_right = 1090.0
+margin_bottom = 756.0
+custom_styles/tab_fg = SubResource( 10 )
+custom_styles/tab_bg = SubResource( 11 )
+custom_styles/panel = SubResource( 12 )
+custom_fonts/font = SubResource( 13 )
+custom_constants/side_margin = 50
+tab_align = 0
+all_tabs_in_front = true
+use_hidden_tabs_for_min_size = true
+
+[node name="Tanks" type="HBoxContainer" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 45.0
+margin_top = 99.0
+margin_right = -45.0
+margin_bottom = -35.0
+custom_constants/separation = 100
+alignment = 1
+
+[node name="LeftBttn" type="TextureButton" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks"]
+margin_right = 100.0
+margin_bottom = 622.0
+rect_min_size = Vector2( 100, 0 )
+texture_normal = ExtResource( 7 )
+expand = true
+stretch_mode = 3
+
+[node name="TanksScroll" type="ScrollContainer" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks"]
+margin_left = 200.0
+margin_right = 800.0
+margin_bottom = 622.0
+rect_min_size = Vector2( 600, 600 )
+mouse_filter = 2
+theme = SubResource( 19 )
+scroll_vertical_enabled = false
+
+[node name="HBox" type="HBoxContainer" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks/TanksScroll"]
+margin_right = 4224.0
+margin_bottom = 622.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="InventoryTank1" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks/TanksScroll/HBox" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 600.0
+margin_bottom = 622.0
+
+[node name="InventoryTank2" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks/TanksScroll/HBox" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 604.0
+margin_right = 1204.0
+margin_bottom = 622.0
+tank_type = 2
+
+[node name="InventoryTank3" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks/TanksScroll/HBox" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1208.0
+margin_right = 1808.0
+margin_bottom = 622.0
+tank_type = 3
+
+[node name="InventoryTank4" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks/TanksScroll/HBox" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 1812.0
+margin_right = 2412.0
+margin_bottom = 622.0
+tank_type = 4
+
+[node name="InventoryTank5" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks/TanksScroll/HBox" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 2416.0
+margin_right = 3016.0
+margin_bottom = 622.0
+tank_type = 5
+
+[node name="InventoryTank6" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks/TanksScroll/HBox" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 3020.0
+margin_right = 3620.0
+margin_bottom = 622.0
+tank_type = 6
+
+[node name="InventoryTank7" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks/TanksScroll/HBox" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 3624.0
+margin_right = 4224.0
+margin_bottom = 622.0
+tank_type = 7
+
+[node name="RightBttn" type="TextureButton" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks"]
+modulate = Color( 1, 1, 1, 0.823529 )
+margin_left = 900.0
+margin_right = 1000.0
+margin_bottom = 622.0
+rect_min_size = Vector2( 100, 0 )
+texture_normal = ExtResource( 8 )
+expand = true
+stretch_mode = 3
+
+[node name="Bullets" type="HBoxContainer" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 45.0
+margin_top = 99.0
+margin_right = -45.0
+margin_bottom = -35.0
+
+[node name="DetailsVBox" type="VBoxContainer" parent="InventoryVBox/MainPanel/MainVBox/HBox_2"]
+margin_left = 1100.0
+margin_right = 1580.0
+margin_bottom = 756.0
+size_flags_horizontal = 3
+custom_constants/separation = 0
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Margin" type="MarginContainer" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/DetailsVBox"]
+margin_right = 480.0
+margin_bottom = 37.0
+custom_constants/margin_bottom = 37
+
+[node name="DetailsLabel" type="RichTextLabel" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/DetailsVBox"]
+margin_top = 37.0
+margin_right = 480.0
+margin_bottom = 756.0
+rect_min_size = Vector2( 400, 700 )
+size_flags_vertical = 3
+custom_styles/normal = SubResource( 20 )
+custom_fonts/bold_font = SubResource( 21 )
+custom_fonts/normal_font = SubResource( 22 )
+custom_constants/line_separation = 40
+bbcode_enabled = true
+scroll_active = false
+
+[node name="ScrollTween" type="Tween" parent="."]
+
+[connection signal="button_down" from="InventoryVBox/LabelHBox/SaveBttn" to="InventoryVBox/LabelHBox/SaveBttn" method="set_scale" binds= [ Vector2( 0.9, 0.9 ) ]]
+[connection signal="button_up" from="InventoryVBox/LabelHBox/SaveBttn" to="InventoryVBox/LabelHBox/SaveBttn" method="set_scale" binds= [ Vector2( 1, 1 ) ]]
+[connection signal="pressed" from="InventoryVBox/LabelHBox/SaveBttn" to="." method="_on_SaveBttn_pressed"]
+[connection signal="button_down" from="InventoryVBox/LabelHBox/CloseBttn" to="InventoryVBox/LabelHBox/CloseBttn" method="set_scale" binds= [ Vector2( 0.9, 0.9 ) ]]
+[connection signal="button_up" from="InventoryVBox/LabelHBox/CloseBttn" to="InventoryVBox/LabelHBox/CloseBttn" method="set_scale" binds= [ Vector2( 1, 1 ) ]]
+[connection signal="pressed" from="InventoryVBox/LabelHBox/CloseBttn" to="." method="_on_CloseBttn_pressed"]
+[connection signal="pressed" from="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks/LeftBttn" to="." method="_on_LeftBttn_pressed"]
+[connection signal="pressed" from="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks/RightBttn" to="." method="_on_RightBttn_pressed"]
+[connection signal="tween_all_completed" from="ScrollTween" to="." method="_on_ScrollTween_tween_all_completed"]

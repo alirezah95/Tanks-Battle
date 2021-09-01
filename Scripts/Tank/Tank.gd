@@ -10,12 +10,14 @@ onready var shot_fire_sprt: Sprite = $BarrelSprite/ShotFireSprite
 onready var animations: AnimationPlayer = $Animations
 onready var tank_front: Position2D = $TankFront
 onready var tank_back: Position2D = $TankBack
+onready var health_bar: ProgressBar = $HealthBar
+onready var tank_tween: Tween = $TankTween
 
 # Each tank has a health value and when that health is reached 0, the tank
 # should be destroyed.
-export(float) var health: float = 2000.0
+export(float) var health: float = 6000.0
 # Sets cool down timer wait_time property
-export(float, 0.5, 1.2, 0.1) var cool_down_time: float = 0.8
+export(float, 0.5, 1.2, 0.1) var cool_down_time: float = 1.2
 
 # Maximum available accelaration (maximum engine force)
 export(float) var max_accel: float = 800
@@ -24,7 +26,7 @@ export(float) var reverse_accel: float = -350
 # Break deacceleration
 export(float) var break_de_accel: float = -200
 # Engine deaccelaration ratio
-export(float, 0.2, 0.3, 0.02) var engine_accel: float = 0.1
+export(float, 0.05, 0.2, 0.01) var engine_accel: float = 0.1
 # Friction constant
 export(float, -0.2, -0.5, 0.1) var friction: float = -0.3
 # Holds drag constant, which is caused by air resistance.
@@ -51,10 +53,16 @@ var curr_traction: float = 0.99
 var is_shot_locked: bool = false
 # Shows if tank is destroyed (dead)
 var is_dead: bool = false
+# Delay time to hide health bar
+var hide_health_delay: float = 1.5 # In seconds.
+# Is health bar shown
+var is_health_bar_shown: bool = false
 
 
 
 func _ready() -> void:
+	_on_ready()
+	
 	add_to_group("tank")
 	shot_fire_sprt.modulate = Color.transparent
 	shot_fire_sprt.offset = Vector2(shot_fire_sprt.texture.get_size().x / 2, 0)
@@ -63,7 +71,11 @@ func _ready() -> void:
 	
 	cool_down_tmr.wait_time = cool_down_time
 	
-	_on_ready()
+	health_bar.min_value = 0
+	health_bar.max_value = health
+	health_bar.value = health
+	health_bar.modulate = Color.transparent
+	
 	return
 	
 
@@ -74,6 +86,14 @@ func _on_ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_health_bar_shown:
+		hide_health_delay -= delta
+		if hide_health_delay < 0.0:
+			tank_tween.interpolate_property(health_bar, "modulate:a",
+				modulate.a, 0, 0.4)
+			tank_tween.start()
+			is_health_bar_shown = false
+	
 	accel = Vector2()
 	speed = velocity.length()
 	_control(delta)
@@ -85,6 +105,11 @@ func _physics_process(delta: float) -> void:
 	move_and_slide(velocity)
 	
 	return
+	
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	OS
 	
 
 
@@ -118,7 +143,7 @@ func _handle_steering(delta: float) -> void:
 	var front_wheel = (tank_front.global_position + 
 			velocity.rotated(curr_steer_ang) * delta)
 	var new_heading = (front_wheel - rear_wheel).normalized()
-	rotation = new_heading.angle()
+	set_rotation(new_heading.angle())
 	
 	var target_vel = new_heading * speed
 	var is_moving_forward: bool = true if new_heading.dot(velocity) > 0 else false
@@ -141,8 +166,24 @@ func _handle_drift(delta: float) -> void:
 	
 
 
+func set_rotation(value: float) -> void:
+	.set_rotation(value)
+	health_bar.set_rotation(-value)
+	
+	return
+	
+
+
 func apply_impact(damage: float) -> void:
 	health -= damage
+	health_bar.value = health
+	
+	hide_health_delay = 1.5
+	if not is_health_bar_shown:
+		is_health_bar_shown = true
+		tank_tween.interpolate_property(health_bar, "modulate:a", modulate.a,
+			1, 0.4)
+		tank_tween.start()
 	
 	if health <= 0:
 		call_deferred("die")

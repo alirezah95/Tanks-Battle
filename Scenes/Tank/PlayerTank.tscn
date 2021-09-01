@@ -1,29 +1,28 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scenes/Tank/Tank.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Tank/PlayerTank.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Gfx/tankBody_blue_outline.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Gfx/tankBlue_barrel2_outline.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Gfx/Particles/muzzle_04.png" type="Texture" id=5]
-[ext_resource path="res://Assets/Gfx/radial_health.png" type="Texture" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32.0616, 30.9572 )
 
-[sub_resource type="Gradient" id=6]
+[sub_resource type="Gradient" id=2]
 offsets = PoolRealArray( 0.452489, 1 )
 colors = PoolColorArray( 1, 1, 1, 1, 0.45098, 0.45098, 0.45098, 0.603922 )
 
-[sub_resource type="GradientTexture" id=2]
-gradient = SubResource( 6 )
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
 
-[sub_resource type="Curve" id=3]
+[sub_resource type="Curve" id=4]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.764706 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=4]
-curve = SubResource( 3 )
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
 
-[sub_resource type="ParticlesMaterial" id=7]
+[sub_resource type="ParticlesMaterial" id=6]
 resource_local_to_scene = true
 flag_disable_z = true
 gravity = Vector3( 0, 0, 0 )
@@ -33,12 +32,12 @@ orbit_velocity_random = 0.0
 angle = 90.0
 angle_random = 1.0
 scale = 3.0
-scale_curve = SubResource( 4 )
-color_ramp = SubResource( 2 )
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 3 )
 hue_variation = 0.25
 hue_variation_random = 0.25
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=7]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:scale")
@@ -64,18 +63,6 @@ tracks/1/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 0, 0, 0.768627, 0.352941 ), Color( 0, 0, 0.768627, 0 ) ]
 }
-tracks/2/type = "value"
-tracks/2/path = NodePath("UILayer/Control:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
 
 [node name="PlayerTank" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -83,62 +70,31 @@ script = ExtResource( 2 )
 [node name="TankSprite" parent="." index="0"]
 texture = ExtResource( 3 )
 
-[node name="BarrelSprite" parent="." index="1"]
+[node name="TankFront" parent="." index="1"]
+position = Vector2( 33.0855, 0 )
+
+[node name="TankBack" parent="." index="2"]
+position = Vector2( -34.3383, 0 )
+
+[node name="BarrelSprite" parent="." index="3"]
 texture = ExtResource( 4 )
 offset = Vector2( 30, 0 )
 
 [node name="ShotFireSprite" parent="BarrelSprite" index="0"]
 texture = ExtResource( 5 )
 
-[node name="TankCollision" parent="." index="2"]
+[node name="TankCollision" parent="." index="4"]
 shape = SubResource( 1 )
 
-[node name="ExplosionParticles" parent="." index="3"]
-process_material = SubResource( 7 )
+[node name="ExplosionParticles" parent="." index="5"]
+process_material = SubResource( 6 )
 
-[node name="PlayerCamera" type="Camera2D" parent="." index="6"]
+[node name="Animations" parent="." index="8"]
+anims/FallIntoSee = SubResource( 7 )
+
+[node name="PlayerCamera" type="Camera2D" parent="." index="11"]
 current = true
 zoom = Vector2( 1.5, 1.5 )
 smoothing_enabled = true
-
-[node name="Animations" parent="." index="7"]
-anims/FallIntoSee = SubResource( 5 )
-
-[node name="TankFront" parent="." index="8"]
-position = Vector2( 33.0855, 0 )
-
-[node name="TankBack" parent="." index="9"]
-position = Vector2( -34.3383, 0 )
-
-[node name="UILayer" type="CanvasLayer" parent="." index="10"]
-scale = Vector2( 0.8, 0.8 )
-transform = Transform2D( 0.8, 0, 0, 0.8, 0, 0 )
-
-[node name="Control" type="Control" parent="UILayer" index="0"]
-margin_right = 2880.0
-margin_bottom = 1620.0
-rect_min_size = Vector2( 2880, 1620 )
-mouse_filter = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Health" type="TextureProgress" parent="UILayer/Control" index="0"]
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 270.0
-margin_bottom = 270.0
-rect_rotation = -22.0
-rect_pivot_offset = Vector2( 125, 110 )
-texture_under = ExtResource( 6 )
-texture_progress = ExtResource( 6 )
-fill_mode = 5
-tint_under = Color( 0.368627, 0.368627, 0.368627, 0.588235 )
-tint_progress = Color( 0.121765, 0.411007, 0.820312, 1 )
-radial_initial_angle = 90.0
-radial_fill_degrees = 225.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [connection signal="animation_finished" from="Animations" to="." method="_on_Animations_animation_finished"]

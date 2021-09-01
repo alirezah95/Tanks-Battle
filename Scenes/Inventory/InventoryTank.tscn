@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/Inventory/InventoryTank.gd" type="Script" id=1]
+
+[node name="InventoryTank" type="TextureRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -1320.0
+margin_bottom = -480.0
+rect_min_size = Vector2( 600, 600 )
+stretch_mode = 4
+flip_v = true
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

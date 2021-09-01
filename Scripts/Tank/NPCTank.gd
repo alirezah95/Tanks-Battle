@@ -237,10 +237,6 @@ func _control(delta: float) -> void:
 	
 	update()
 	
-	$UILayer/Control/HBox/SpeedX.text = str(speed)
-	$UILayer/Control/HBox/AccelX.text = str(accel.x)
-	$UILayer/Control/HBox/AccelY.text = str(accel.y)
-	$UILayer/Control/HBox/Label.text = MoveState.keys()[curr_move_state]
 	return
 	
 
@@ -320,14 +316,12 @@ func _handle_steering(delta: float) -> void:
 	if abs(target_diff_angle) <= abs(curr_steer_ang):
 		need_steering = false
 		curr_steer_ang = 0
-		rotation += target_diff_angle
+		set_rotation(rotation + target_diff_angle)
 	else:
-		rotation += curr_steer_ang
+		set_rotation(rotation + curr_steer_ang)
 	
 	var target_vel: Vector2 = transform.x * speed
 	velocity = velocity.linear_interpolate(target_vel, curr_traction)
-	
-	$UILayer/Control/HBox/SpeedY.text = str(curr_traction)
 	
 	return
 	

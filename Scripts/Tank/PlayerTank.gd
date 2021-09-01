@@ -3,7 +3,6 @@ extends "res://Scripts/Tank/Tank.gd"
 class_name PlayerTank
 
 onready var camera: Camera2D = $PlayerCamera
-onready var health_bar: TextureProgress = $UILayer/Control/Health
 
 # Shows if player tank is fallen into see
 var is_fallen_into_see: bool = false
@@ -11,12 +10,13 @@ var is_fallen_into_see: bool = false
 
 
 func _ready() -> void:
+	return
+	
+
+
+func _on_ready() -> void:
 	Global.player = self
 	health = 10000
-	
-	health_bar.min_value = 0
-	health_bar.max_value = health
-	health_bar.value = health
 	
 	return
 	
@@ -90,19 +90,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	return
 	
-
-
-func apply_impact(damage: float) -> void:
-	.apply_impact(damage)
-	
-	health_bar.value = health
-	
-	if health_bar.value <= 3000:
-		health_bar.tint_progress = Color("cf0000")
-	
-	return
-	
-
 
 
 func _on_DestroyDelay_timeout() -> void:

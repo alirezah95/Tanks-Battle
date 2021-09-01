@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/Shot/Shot.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Gfx/bulletRed1_outline.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Gfx/bulletRed2_outline.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Sounds/tank_fire.mp3" type="AudioStream" id=3]
 
 [node name="Shot" type="Node2D"]
