@@ -84,6 +84,7 @@ offset = Vector2( 30, 0 )
 texture = ExtResource( 5 )
 
 [node name="TankCollision" parent="." index="4"]
+visible = true
 shape = SubResource( 1 )
 
 [node name="ExplosionParticles" parent="." index="5"]

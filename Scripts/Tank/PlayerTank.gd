@@ -16,7 +16,24 @@ func _ready() -> void:
 
 func _on_ready() -> void:
 	Global.player = self
-	health = 10000
+	
+	health = Global.tank_specifiation["h"]
+	max_accel = Global.tank_specifiation["a"]
+	engine_accel = Global.tank_specifiation["p"]
+	break_de_accel = -Global.tank_specifiation["br"]
+	steer_sp = Global.tank_specifiation["st"]
+	max_steer_ang = steer_sp / 2.0
+	cool_down_time = Global.tank_specifiation["cd"]
+	
+	tank_sprt.texture = load("res://Assets/Gfx/"
+		+ Global.tank_specifiation["bd"])
+	barrel_sprt.texture = load("res://Assets/Gfx/"
+		+ Global.tank_specifiation["muz"])
+	
+	barrel_sprt.offset.x = barrel_sprt.texture.get_size().x / 2
+	
+	(tank_collision.shape as RectangleShape2D).extents = (
+		tank_sprt.texture.get_size() / 2)
 	
 	return
 	

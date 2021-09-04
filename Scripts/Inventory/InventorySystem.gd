@@ -129,8 +129,21 @@ func _on_ScrollTween_tween_all_completed() -> void:
 
 
 func _on_SaveBttn_pressed() -> void:
-	pass # Replace with function body.
+	Global.tank_specifiation = _current_tank.tanks_data[_current_tank.tank_type]
+	Global.tank_specifiation.erase("img");
+	
+	var file: File = File.new()
+	file.open("res://Assets/tank_spec.json", File.WRITE)
+	file.store_string(to_json(Global.tank_specifiation))
+	file.close()
+	
+	get_tree().change_scene("res://Scenes/Home.tscn")
+	
+	return
+	
 
 
 func _on_CloseBttn_pressed() -> void:
-	pass # Replace with function body.
+	get_tree().change_scene("res://Scenes/Home.tscn")
+	return
+	

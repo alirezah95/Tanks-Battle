@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://Assets/Fonts/Kenney Future Narrow.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/Gfx/Inventory_system/bg_white_gray.png" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Assets/Gfx/Inventory_system/arrow_right.png" type="Texture" id=8]
 [ext_resource path="res://Assets/Fonts/B612Mono-Bold.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://Assets/Fonts/ComicNeue-Bold.ttf" type="DynamicFontData" id=10]
+[ext_resource path="res://Assets/Tres/roundec_bordered_rect.tres" type="Material" id=11]
 
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 2 )
@@ -35,41 +36,26 @@ corner_radius_top_right = 60
 corner_radius_bottom_right = 60
 corner_radius_bottom_left = 60
 
-[sub_resource type="StyleBoxFlat" id=24]
-bg_color = Color( 0.201, 0.513667, 0.67, 1 )
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+[sub_resource type="Gradient" id=5]
+colors = PoolColorArray( 0, 0.475, 0.75, 1, 0, 1, 0.666667, 1 )
 
-[sub_resource type="StyleBoxFlat" id=26]
-bg_color = Color( 0.341176, 0.341176, 0.341176, 1 )
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+[sub_resource type="GradientTexture" id=6]
+gradient = SubResource( 5 )
 
-[sub_resource type="DynamicFont" id=23]
+[sub_resource type="DynamicFont" id=7]
 size = 30
 use_filter = true
-extra_spacing_top = 5
+extra_spacing_top = 3
 font_data = ExtResource( 10 )
 
-[sub_resource type="StyleBoxFlat" id=25]
-bg_color = Color( 0.811765, 0.00784314, 0.00784314, 1 )
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+[sub_resource type="Gradient" id=8]
+offsets = PoolRealArray( 0, 0.812227 )
+colors = PoolColorArray( 1, 0.0705882, 0.0862745, 1, 1, 0.126843, 0.667574, 1 )
 
-[sub_resource type="StyleBoxFlat" id=27]
-bg_color = Color( 0.345098, 0.345098, 0.345098, 1 )
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+[sub_resource type="GradientTexture" id=9]
+gradient = SubResource( 8 )
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=10]
 content_margin_left = 10.0
 content_margin_right = 10.0
 content_margin_top = 10.0
@@ -90,7 +76,7 @@ expand_margin_right = 20.0
 expand_margin_top = 20.0
 expand_margin_bottom = 20.0
 
-[sub_resource type="StyleBoxFlat" id=10]
+[sub_resource type="StyleBoxFlat" id=11]
 content_margin_left = 25.0
 content_margin_right = 25.0
 content_margin_top = 20.0
@@ -107,7 +93,7 @@ corner_radius_top_right = 60
 corner_radius_bottom_right = 60
 corner_radius_bottom_left = 60
 
-[sub_resource type="StyleBoxFlat" id=11]
+[sub_resource type="StyleBoxFlat" id=12]
 content_margin_left = 25.0
 content_margin_right = 25.0
 content_margin_top = 20.0
@@ -124,7 +110,7 @@ corner_radius_top_right = 60
 corner_radius_bottom_right = 60
 corner_radius_bottom_left = 60
 
-[sub_resource type="StyleBoxFlat" id=12]
+[sub_resource type="StyleBoxFlat" id=13]
 content_margin_left = 45.0
 content_margin_right = 45.0
 content_margin_top = 30.0
@@ -142,12 +128,10 @@ corner_radius_bottom_right = 60
 corner_radius_bottom_left = 60
 expand_margin_top = 30.0
 
-[sub_resource type="DynamicFont" id=13]
+[sub_resource type="DynamicFont" id=14]
 size = 25
 use_filter = true
 font_data = ExtResource( 1 )
-
-[sub_resource type="StyleBoxEmpty" id=14]
 
 [sub_resource type="StyleBoxEmpty" id=15]
 
@@ -157,18 +141,20 @@ font_data = ExtResource( 1 )
 
 [sub_resource type="StyleBoxEmpty" id=18]
 
-[sub_resource type="Theme" id=19]
+[sub_resource type="StyleBoxEmpty" id=19]
+
+[sub_resource type="Theme" id=20]
 HScrollBar/icons/decrement = null
 HScrollBar/icons/decrement_highlight = null
 HScrollBar/icons/increment = null
 HScrollBar/icons/increment_highlight = null
-HScrollBar/styles/grabber = SubResource( 14 )
-HScrollBar/styles/grabber_highlight = SubResource( 15 )
-HScrollBar/styles/grabber_pressed = SubResource( 16 )
-HScrollBar/styles/scroll = SubResource( 17 )
-HScrollBar/styles/scroll_focus = SubResource( 18 )
+HScrollBar/styles/grabber = SubResource( 15 )
+HScrollBar/styles/grabber_highlight = SubResource( 16 )
+HScrollBar/styles/grabber_pressed = SubResource( 17 )
+HScrollBar/styles/scroll = SubResource( 18 )
+HScrollBar/styles/scroll_focus = SubResource( 19 )
 
-[sub_resource type="StyleBoxFlat" id=20]
+[sub_resource type="StyleBoxFlat" id=21]
 content_margin_left = 20.0
 content_margin_right = 20.0
 content_margin_top = 90.0
@@ -184,11 +170,11 @@ corner_radius_top_right = 60
 corner_radius_bottom_right = 60
 corner_radius_bottom_left = 60
 
-[sub_resource type="DynamicFont" id=21]
+[sub_resource type="DynamicFont" id=22]
 size = 42
 font_data = ExtResource( 9 )
 
-[sub_resource type="DynamicFont" id=22]
+[sub_resource type="DynamicFont" id=23]
 font_data = ExtResource( 5 )
 
 [node name="InventorySystem" type="PanelContainer"]
@@ -211,7 +197,7 @@ custom_constants/separation = -45
 [node name="LabelHBox" type="HBoxContainer" parent="InventoryVBox"]
 margin_right = 1600.0
 margin_bottom = 100.0
-custom_constants/separation = 24
+custom_constants/separation = 12
 
 [node name="Margin" type="MarginContainer" parent="InventoryVBox/LabelHBox"]
 margin_right = 15.0
@@ -219,8 +205,8 @@ margin_bottom = 100.0
 custom_constants/margin_right = 15
 
 [node name="InvenLabel" type="Label" parent="InventoryVBox/LabelHBox"]
-margin_left = 39.0
-margin_right = 471.0
+margin_left = 27.0
+margin_right = 459.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 0, 100 )
 custom_styles/normal = SubResource( 2 )
@@ -230,47 +216,64 @@ align = 1
 valign = 1
 
 [node name="Margin2" type="MarginContainer" parent="InventoryVBox/LabelHBox"]
-margin_left = 495.0
-margin_right = 1313.0
+margin_left = 471.0
+margin_right = 1331.0
 margin_bottom = 100.0
-size_flags_horizontal = 3
-custom_constants/margin_right = 33
+custom_constants/margin_right = 860
 
-[node name="SaveBttn" type="Button" parent="InventoryVBox/LabelHBox"]
-margin_left = 1337.0
-margin_right = 1437.0
+[node name="SaveBttn" type="TextureButton" parent="InventoryVBox/LabelHBox"]
+material = ExtResource( 11 )
+margin_left = 1343.0
+margin_right = 1443.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 rect_pivot_offset = Vector2( 52, 52 )
-custom_styles/hover = SubResource( 24 )
-custom_styles/pressed = SubResource( 24 )
-custom_styles/focus = SubResource( 24 )
-custom_styles/disabled = SubResource( 26 )
-custom_styles/normal = SubResource( 24 )
-custom_fonts/font = SubResource( 23 )
+texture_normal = SubResource( 6 )
+expand = true
+
+[node name="ButtonLbl" type="Label" parent="InventoryVBox/LabelHBox/SaveBttn"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Save"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="CloseBttn" type="Button" parent="InventoryVBox/LabelHBox"]
-margin_left = 1461.0
-margin_right = 1561.0
+[node name="CloseBttn" type="TextureButton" parent="InventoryVBox/LabelHBox"]
+material = ExtResource( 11 )
+margin_left = 1455.0
+margin_right = 1555.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 rect_pivot_offset = Vector2( 52, 52 )
-custom_styles/hover = SubResource( 25 )
-custom_styles/pressed = SubResource( 25 )
-custom_styles/focus = SubResource( 25 )
-custom_styles/disabled = SubResource( 27 )
-custom_styles/normal = SubResource( 25 )
-custom_fonts/font = SubResource( 23 )
+texture_normal = SubResource( 9 )
+expand = true
+
+[node name="ButtonLbl" type="Label" parent="InventoryVBox/LabelHBox/CloseBttn"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Cancel"
+text = "Quit"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Margin3" type="MarginContainer" parent="InventoryVBox/LabelHBox"]
-margin_left = 1585.0
-margin_right = 1600.0
+margin_left = 1567.0
+margin_right = 1587.0
 margin_bottom = 100.0
-custom_constants/margin_right = 15
+custom_constants/margin_left = 20
 
 [node name="MainPanel" type="PanelContainer" parent="InventoryVBox"]
 show_behind_parent = true
@@ -279,7 +282,7 @@ margin_right = 1600.0
 margin_bottom = 935.0
 mouse_filter = 2
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 9 )
+custom_styles/panel = SubResource( 10 )
 
 [node name="MainVBox" type="VBoxContainer" parent="InventoryVBox/MainPanel"]
 margin_left = 10.0
@@ -304,10 +307,10 @@ custom_constants/separation = 10
 [node name="ItemsCenter" type="TabContainer" parent="InventoryVBox/MainPanel/MainVBox/HBox_2"]
 margin_right = 1090.0
 margin_bottom = 756.0
-custom_styles/tab_fg = SubResource( 10 )
-custom_styles/tab_bg = SubResource( 11 )
-custom_styles/panel = SubResource( 12 )
-custom_fonts/font = SubResource( 13 )
+custom_styles/tab_fg = SubResource( 11 )
+custom_styles/tab_bg = SubResource( 12 )
+custom_styles/panel = SubResource( 13 )
+custom_fonts/font = SubResource( 14 )
 custom_constants/side_margin = 50
 tab_align = 0
 all_tabs_in_front = true
@@ -337,7 +340,7 @@ margin_right = 800.0
 margin_bottom = 622.0
 rect_min_size = Vector2( 600, 600 )
 mouse_filter = 2
-theme = SubResource( 19 )
+theme = SubResource( 20 )
 scroll_vertical_enabled = false
 
 [node name="HBox" type="HBoxContainer" parent="InventoryVBox/MainPanel/MainVBox/HBox_2/ItemsCenter/Tanks/TanksScroll"]
@@ -441,9 +444,9 @@ margin_right = 480.0
 margin_bottom = 756.0
 rect_min_size = Vector2( 400, 700 )
 size_flags_vertical = 3
-custom_styles/normal = SubResource( 20 )
-custom_fonts/bold_font = SubResource( 21 )
-custom_fonts/normal_font = SubResource( 22 )
+custom_styles/normal = SubResource( 21 )
+custom_fonts/bold_font = SubResource( 22 )
+custom_fonts/normal_font = SubResource( 23 )
 custom_constants/line_separation = 40
 bbcode_enabled = true
 scroll_active = false

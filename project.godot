@@ -39,7 +39,7 @@ _global_script_class_icons={
 [application]
 
 config/name="tanksBattle"
-run/main_scene="res://Scenes/Level.tscn"
+run/main_scene="res://Scenes/Home.tscn"
 config/icon="res://icon.png"
 
 [autoload]

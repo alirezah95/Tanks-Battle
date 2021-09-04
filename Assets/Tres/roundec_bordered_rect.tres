@@ -1,0 +1,44 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=3]
+code = "shader_type canvas_item;
+
+uniform vec2 texture_res;
+uniform vec4 boarder_color;
+uniform float corners_radius;
+uniform float borders_width;
+varying vec2 fragCoord;
+
+float sRoundrect(vec2 p,vec2 w, float corner) {
+	vec2 d = abs(p) - w * 0.5 + corner;
+	return (min(max(d.x, d.y), 0.0) + length(max(d, 0.0)) - corner);
+}
+
+vec4 rectangle(in vec2 pos, in vec2 size, vec4 color, vec4 border_color, float corner, float border, bool mix_border) {
+	vec4 res_color;
+	float d = sRoundrect(pos, size, corner);
+
+	res_color = smoothstep(d - 0.02, d, 0.0) * mix((border < 0.1) ? color: border_color, color, 
+		(border < 0.1) ? d: (mix_border? smoothstep(0.0, -border, d): step(d, -border)));
+	
+	return res_color;
+}
+
+void vertex()
+{
+	fragCoord = VERTEX;
+}
+
+void fragment()
+{
+	vec4 color = texture(TEXTURE, UV);
+	color = rectangle(fragCoord - texture_res / 2., texture_res, color, boarder_color, corners_radius, borders_width, true);
+	COLOR = color;
+}"
+
+[resource]
+shader = SubResource( 3 )
+shader_param/texture_res = Vector2( 100, 100 )
+shader_param/boarder_color = Plane( 0.14, 0.16, 0.23, 1 )
+shader_param/corners_radius = 28.0
+shader_param/borders_width = 8.0

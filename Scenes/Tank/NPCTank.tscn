@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scenes/Tank/Tank.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Tank/NPCTank.gd" type="Script" id=2]
-[ext_resource path="res://Assets/Gfx/tankBody_huge.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Gfx/tankBody_huge_outline.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Gfx/tankDark_barrel3_outline.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Gfx/Particles/muzzle_04.png" type="Texture" id=6]
 
@@ -49,8 +49,13 @@ texture = ExtResource( 3 )
 region_enabled = true
 region_rect = Rect2( 8.93055, -0.230221, 99.8742, 93.5631 )
 
-[node name="BarrelSprite" parent="." index="1"]
-position = Vector2( 15, 0 )
+[node name="TankFront" parent="." index="1"]
+position = Vector2( 41.4709, 0 )
+
+[node name="TankBack" parent="." index="2"]
+position = Vector2( -49.6063, 0 )
+
+[node name="BarrelSprite" parent="." index="3"]
 scale = Vector2( 1.4, 1.1 )
 texture = ExtResource( 4 )
 offset = Vector2( 30, 0 )
@@ -59,11 +64,11 @@ flip_h = true
 [node name="ShotFireSprite" parent="BarrelSprite" index="0"]
 texture = ExtResource( 6 )
 
-[node name="TankCollision" parent="." index="2"]
+[node name="TankCollision" parent="." index="4"]
 position = Vector2( -4.56378, 0 )
 shape = SubResource( 1 )
 
-[node name="ExplosionParticles" parent="." index="3"]
+[node name="ExplosionParticles" parent="." index="5"]
 process_material = SubResource( 6 )
 
 [node name="NPCVisibilityEnabler" type="VisibilityEnabler2D" parent="." index="6"]
@@ -72,12 +77,6 @@ pause_particles = false
 pause_animated_sprites = false
 process_parent = true
 physics_process_parent = true
-
-[node name="TankFront" parent="." index="9"]
-position = Vector2( 41.4709, 0 )
-
-[node name="TankBack" parent="." index="10"]
-position = Vector2( -49.6063, 0 )
 
 [node name="RigidBody2D" type="RigidBody2D" parent="." index="12"]
 position = Vector2( 63.0037, -67.959 )

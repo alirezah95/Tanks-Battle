@@ -6,7 +6,7 @@ var tanks_data: Dictionary = {
 	1: {
 		"h": 8000, "a": 700, "p": 0.06, "br": 180, "st": 0.50, "cd": 1.0,
 		"img": preload("res://Assets/Gfx/Inventory_system/tank_blue_outline.png"),
-		"bd": "Gfx/tankBody_blue_outline.png",
+		"bd": "tankBody_blue_outline.png",
 		"muz": "tankBlue_barrel2_outline.png" },
 	2: {
 		"h": 8600, "a": 770, "p": 0.07, "br": 185, "st": 0.51, "cd": 0.8,
