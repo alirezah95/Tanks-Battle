@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=2]
 
-[sub_resource type="Shader" id=3]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 uniform vec2 texture_res;
@@ -37,8 +37,8 @@ void fragment()
 }"
 
 [resource]
-shader = SubResource( 3 )
+shader = SubResource( 1 )
 shader_param/texture_res = Vector2( 100, 100 )
-shader_param/boarder_color = Plane( 0.14, 0.16, 0.23, 1 )
-shader_param/corners_radius = 28.0
+shader_param/boarder_color = Plane( 0.23, 0.16, 0.23, 1 )
+shader_param/corners_radius = 26.0
 shader_param/borders_width = 8.0
